@@ -13,12 +13,12 @@
   "paths": {
     "/v1/ping": {
       "post": {
-        "operationId": "AccountService_SayHellogw",
+        "operationId": "AccountService_CreateBankEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1PingMessage"
+              "$ref": "#/definitions/v1Employee"
             }
           },
           "default": {
@@ -34,7 +34,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1PingMessage"
+              "$ref": "#/definitions/v1CreateEmployeeRequest"
             }
           }
         ],
@@ -75,6 +75,44 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1CreateEmployeeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "title": "option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {\n    json_schema: {\n        required: [\"email\", \"password\", \"full_name\"]\n    }\n};"
+        },
+        "password": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Employee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
         }
       }
     },

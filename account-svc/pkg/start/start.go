@@ -1,13 +1,13 @@
 package start
 
 import (
+	"github.com/atyagi9006/banking-app/account-svc/pkg/api"
 	"context"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
 
-	"github.com/atyagi9006/banking-app/account-svc/pkg/api"
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
@@ -52,7 +52,7 @@ func startGRPCServer(address, certFile, keyFile string) error {
 	}
 
 	// create service hello service
-	accountSvc := api.AccountService{}
+	accountSvc := api.NewAccountService()
 
 	// Create the TLS credentials
 	creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)

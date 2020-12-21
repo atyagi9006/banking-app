@@ -1,14 +1,13 @@
 syntax = "proto3";
-package banking.api.AccountService.v1;
+package banking.account.v1;
 
-//option go_package = "github.com/atyagi9006/banking-app/account-svc/pkg/proto;banking_api_AccountService_v1";
+//option go_package = "github.com/atyagi9006/banking-app/account-svc/pkg/proto;banking_account_v1";
 
 
 import "google/api/annotations.proto";
+//import "google/protobuf/struct.proto";
+//import "protoc-gen-openapiv2/options/annotations.proto";
 
-message PingMessage {
-    string greeting = 1;
-}
 
 service AccountService {
     rpc SayHello(PingMessage) returns (PingMessage) {
@@ -23,4 +22,36 @@ service AccountService {
              body: "*"
         };
     }
+
+    rpc CreateBankEmployee(CreateEmployeeRequest) returns (Employee) {
+        option (google.api.http) = {
+             post: "/v1/ping"
+             body: "*"
+        };
+    }
+
+}
+message CreateEmployeeRequest{
+    // option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+    //     json_schema: {
+    //         required: ["email", "password", "full_name"]
+    //     }
+    // };
+    string email =1; //[(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {max_length: 80}];
+    string password = 2;
+    string full_name = 3;
+    string role = 4; 
+}
+
+message Employee{
+    string id =1;
+    string email = 2 ;
+    string password = 3;
+    string full_name = 4;
+    string role = 5;
+}
+
+
+message PingMessage {
+    string greeting = 1;
 }

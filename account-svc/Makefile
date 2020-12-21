@@ -15,6 +15,8 @@ all: build_server build_client
 proto-swag: pkg/proto/api.proto
 	@protoc -I pkg/proto/ \
 		-I${GOPATH}/src \
+		-I${GOPATH}/src/github.com/protocolbuffers/protobuf \
+		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--swagger_out=logtostderr=true:pkg/proto \
 		pkg/proto/api.proto
@@ -22,6 +24,8 @@ proto-swag: pkg/proto/api.proto
 proto-gw:#pkg/proto/api.proto
 	@protoc -I pkg/proto/ \
 		-I${GOPATH}/src \
+		-I${GOPATH}/src/github.com/protocolbuffers/protobuf/src \
+		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--grpc-gateway_out=logtostderr=true:pkg/proto \
 		pkg/proto/api.proto
@@ -29,6 +33,8 @@ proto-gw:#pkg/proto/api.proto
 proto: pkg/proto/api.proto # pkg/proto/api.proto it is just a extra check if proto file is present or not
 	@protoc -I pkg/proto/ \
 		-I${GOPATH}/src \
+		-I${GOPATH}/src/github.com/protocolbuffers/protobuf \
+		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--go_out=plugins=grpc:pkg/proto \
 		pkg/proto/api.proto
