@@ -7,7 +7,7 @@ message PingMessage {
     string greeting = 1;
 }
 
-service Ping {
+service AuthService {
     rpc SayHello(PingMessage) returns (PingMessage) {
         // option (google.api.http) = {
         //     post: "/1/ping"
@@ -16,7 +16,7 @@ service Ping {
     }
     rpc SayHellogw(PingMessage) returns (PingMessage) {
         option (google.api.http) = {
-             post: "/1/ping"
+             post: "/v1/authping"
              body: "*"
         };
     }

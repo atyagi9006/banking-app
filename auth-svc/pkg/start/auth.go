@@ -26,7 +26,7 @@ func credMatcher(headerName string) (mdName string, ok bool) {
 }
 
 // authenticateAgent check the client credentials
-func authenticateClient(ctx context.Context, s *api.HelloGRPCService) (string, error) {
+func authenticateClient(ctx context.Context, s *api.AuthService) (string, error) {
 	if md, ok := metadata.FromIncomingContext(ctx); ok {
 		clientLogin := strings.Join(md["login"], "")
 		clientPassword := strings.Join(md["password"], "")
@@ -44,7 +44,7 @@ func authenticateClient(ctx context.Context, s *api.HelloGRPCService) (string, e
 
 // unaryInterceptor calls authenticateClient with current context
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	s, ok := info.Server.(*api.HelloGRPCService)
+	s, ok := info.Server.(*api.AuthService)
 	if !ok {
 		return nil, fmt.Errorf("unable to cast server")
 	}

@@ -7,23 +7,23 @@ import (
 	pb "github.com/atyagi9006/banking-app/auth-svc/pkg/proto"
 )
 
-type HelloGRPCService struct {
+type AuthService struct {
 }
 
 //SayHello is implementing grpc-hello-world
-func (svc *HelloGRPCService) SayHello(ctx context.Context, in *pb.PingMessage) (*pb.PingMessage, error) {
+func (svc *AuthService) SayHello(ctx context.Context, in *pb.PingMessage) (*pb.PingMessage, error) {
 	log.Printf("Received msg : %s in request \n", in.Greeting)
 	res := pb.PingMessage{
-		Greeting: "Milgya greeting...bas rehn de....",
+		Greeting: "Hello auth grpc....",
 	}
 	return &res, nil
 }
 
 //SayHellogw is implementing grpc-gw-hello-world
-func (svc *HelloGRPCService) SayHellogw(ctx context.Context, in *pb.PingMessage) (*pb.PingMessage, error) {
+func (svc *AuthService) SayHellogw(ctx context.Context, in *pb.PingMessage) (*pb.PingMessage, error) {
 	log.Printf("Received msg in gw : %s in request \n", in.Greeting)
 	res := pb.PingMessage{
-		Greeting: "Milgya greeting...bas rehn de.... gw",
+		Greeting: "hello auth GRPC.... gw",
 	}
 	return &res, nil
 }

@@ -85,16 +85,17 @@ var file_api_proto_rawDesc = []byte{
 	0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x22, 0x29, 0x0a, 0x0b, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12,
 	0x1a, 0x0a, 0x08, 0x67, 0x72, 0x65, 0x65, 0x74, 0x69, 0x6e, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x08, 0x67, 0x72, 0x65, 0x65, 0x74, 0x69, 0x6e, 0x67, 0x32, 0x86, 0x01, 0x0a, 0x04,
-	0x50, 0x69, 0x6e, 0x67, 0x12, 0x34, 0x0a, 0x08, 0x53, 0x61, 0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f,
-	0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x1a, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e,
-	0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x0a, 0x53, 0x61,
-	0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x67, 0x77, 0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x12, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x22, 0x12, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0c, 0x22, 0x07, 0x2f, 0x31, 0x2f, 0x70, 0x69, 0x6e,
-	0x67, 0x3a, 0x01, 0x2a, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x09, 0x52, 0x08, 0x67, 0x72, 0x65, 0x65, 0x74, 0x69, 0x6e, 0x67, 0x32, 0x92, 0x01, 0x0a, 0x0b,
+	0x41, 0x75, 0x74, 0x68, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x34, 0x0a, 0x08, 0x53,
+	0x61, 0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x12, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
+	0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x12, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22,
+	0x00, 0x12, 0x4d, 0x0a, 0x0a, 0x53, 0x61, 0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x67, 0x77, 0x12,
+	0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x1a, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x50, 0x69, 0x6e, 0x67,
+	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x17, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x11, 0x22,
+	0x0c, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x70, 0x69, 0x6e, 0x67, 0x3a, 0x01, 0x2a,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -114,10 +115,10 @@ var file_api_proto_goTypes = []interface{}{
 	(*PingMessage)(nil), // 0: proto.PingMessage
 }
 var file_api_proto_depIdxs = []int32{
-	0, // 0: proto.Ping.SayHello:input_type -> proto.PingMessage
-	0, // 1: proto.Ping.SayHellogw:input_type -> proto.PingMessage
-	0, // 2: proto.Ping.SayHello:output_type -> proto.PingMessage
-	0, // 3: proto.Ping.SayHellogw:output_type -> proto.PingMessage
+	0, // 0: proto.AuthService.SayHello:input_type -> proto.PingMessage
+	0, // 1: proto.AuthService.SayHellogw:input_type -> proto.PingMessage
+	0, // 2: proto.AuthService.SayHello:output_type -> proto.PingMessage
+	0, // 3: proto.AuthService.SayHellogw:output_type -> proto.PingMessage
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -172,108 +173,108 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// PingClient is the client API for Ping service.
+// AuthServiceClient is the client API for AuthService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type PingClient interface {
+type AuthServiceClient interface {
 	SayHello(ctx context.Context, in *PingMessage, opts ...grpc.CallOption) (*PingMessage, error)
 	SayHellogw(ctx context.Context, in *PingMessage, opts ...grpc.CallOption) (*PingMessage, error)
 }
 
-type pingClient struct {
+type authServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewPingClient(cc grpc.ClientConnInterface) PingClient {
-	return &pingClient{cc}
+func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
+	return &authServiceClient{cc}
 }
 
-func (c *pingClient) SayHello(ctx context.Context, in *PingMessage, opts ...grpc.CallOption) (*PingMessage, error) {
+func (c *authServiceClient) SayHello(ctx context.Context, in *PingMessage, opts ...grpc.CallOption) (*PingMessage, error) {
 	out := new(PingMessage)
-	err := c.cc.Invoke(ctx, "/proto.Ping/SayHello", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.AuthService/SayHello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *pingClient) SayHellogw(ctx context.Context, in *PingMessage, opts ...grpc.CallOption) (*PingMessage, error) {
+func (c *authServiceClient) SayHellogw(ctx context.Context, in *PingMessage, opts ...grpc.CallOption) (*PingMessage, error) {
 	out := new(PingMessage)
-	err := c.cc.Invoke(ctx, "/proto.Ping/SayHellogw", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.AuthService/SayHellogw", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// PingServer is the server API for Ping service.
-type PingServer interface {
+// AuthServiceServer is the server API for AuthService service.
+type AuthServiceServer interface {
 	SayHello(context.Context, *PingMessage) (*PingMessage, error)
 	SayHellogw(context.Context, *PingMessage) (*PingMessage, error)
 }
 
-// UnimplementedPingServer can be embedded to have forward compatible implementations.
-type UnimplementedPingServer struct {
+// UnimplementedAuthServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedAuthServiceServer struct {
 }
 
-func (*UnimplementedPingServer) SayHello(context.Context, *PingMessage) (*PingMessage, error) {
+func (*UnimplementedAuthServiceServer) SayHello(context.Context, *PingMessage) (*PingMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
-func (*UnimplementedPingServer) SayHellogw(context.Context, *PingMessage) (*PingMessage, error) {
+func (*UnimplementedAuthServiceServer) SayHellogw(context.Context, *PingMessage) (*PingMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHellogw not implemented")
 }
 
-func RegisterPingServer(s *grpc.Server, srv PingServer) {
-	s.RegisterService(&_Ping_serviceDesc, srv)
+func RegisterAuthServiceServer(s *grpc.Server, srv AuthServiceServer) {
+	s.RegisterService(&_AuthService_serviceDesc, srv)
 }
 
-func _Ping_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PingMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PingServer).SayHello(ctx, in)
+		return srv.(AuthServiceServer).SayHello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Ping/SayHello",
+		FullMethod: "/proto.AuthService/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PingServer).SayHello(ctx, req.(*PingMessage))
+		return srv.(AuthServiceServer).SayHello(ctx, req.(*PingMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Ping_SayHellogw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_SayHellogw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PingMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PingServer).SayHellogw(ctx, in)
+		return srv.(AuthServiceServer).SayHellogw(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Ping/SayHellogw",
+		FullMethod: "/proto.AuthService/SayHellogw",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PingServer).SayHellogw(ctx, req.(*PingMessage))
+		return srv.(AuthServiceServer).SayHellogw(ctx, req.(*PingMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Ping_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.Ping",
-	HandlerType: (*PingServer)(nil),
+var _AuthService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.AuthService",
+	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SayHello",
-			Handler:    _Ping_SayHello_Handler,
+			Handler:    _AuthService_SayHello_Handler,
 		},
 		{
 			MethodName: "SayHellogw",
-			Handler:    _Ping_SayHellogw_Handler,
+			Handler:    _AuthService_SayHellogw_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

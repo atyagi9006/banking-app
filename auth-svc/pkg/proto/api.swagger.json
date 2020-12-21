@@ -11,9 +11,9 @@
     "application/json"
   ],
   "paths": {
-    "/1/ping": {
+    "/v1/authping": {
       "post": {
-        "operationId": "Ping_SayHellogw",
+        "operationId": "AuthService_SayHellogw",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -39,7 +39,7 @@
           }
         ],
         "tags": [
-          "Ping"
+          "AuthService"
         ]
       }
     }

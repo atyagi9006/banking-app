@@ -52,7 +52,7 @@ func startGRPCServer(address, certFile, keyFile string) error {
 	}
 
 	// create service hello service
-	helloSvc := api.HelloGRPCService{}
+	helloSvc := api.AuthService{}
 
 	// Create the TLS credentials
 	creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
@@ -68,7 +68,7 @@ func startGRPCServer(address, certFile, keyFile string) error {
 	//create grpc service
 	grpcServer := grpc.NewServer(opts...)
 
-	pb.RegisterPingServer(grpcServer, &helloSvc)
+	pb.RegisterAuthServiceServer(grpcServer, &helloSvc)
 
 	// start the server
 	log.Printf("starting HTTP/2 gRPC server on %s", address)
@@ -94,7 +94,7 @@ func startRESTServer(address, grpcAddress, certFile string) error {
 
 	mux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(credMatcher))
 
-	err = pb.RegisterPingHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
+	err = pb.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
 	if err != nil {
 		return fmt.Errorf("could not register service Ping: %s", err)
 	}
