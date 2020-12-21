@@ -1,0 +1,26 @@
+syntax = "proto3";
+package banking.api.AccountService.v1;
+
+//option go_package = "github.com/atyagi9006/banking-app/account-svc/pkg/proto;banking_api_AccountService_v1";
+
+
+import "google/api/annotations.proto";
+
+message PingMessage {
+    string greeting = 1;
+}
+
+service AccountService {
+    rpc SayHello(PingMessage) returns (PingMessage) {
+        // option (google.api.http) = {
+        //     post: "/v1/ping"
+        //     body: "*"
+        // };
+    }
+    rpc SayHellogw(PingMessage) returns (PingMessage) {
+        option (google.api.http) = {
+             post: "/v1/ping"
+             body: "*"
+        };
+    }
+}
