@@ -69,8 +69,8 @@ func (svc *AccountService) CreateBankEmployee(ctx context.Context, req *pb.Creat
 
 	existingEmp, err := svc.store.GetEmployeeByEmail(ctx, req.Email)
 	if err != nil {
-		log.Println("Error ", err)
 		if !strings.Contains(err.Error(), errNoRows) {
+			log.Println("Error with create new employee: ", err)
 			return nil, status.Error(codes.Internal, errInternal)
 		}
 	}
@@ -124,10 +124,11 @@ func (svc *AccountService) GetEmployee(ctx context.Context, req *pb.GetEmployeeR
 	if req.Email != "" {
 		emp, err := svc.store.GetEmployeeByEmail(ctx, req.Email)
 		if err != nil {
-			log.Println("Error ", err)
+
 			if strings.Contains(err.Error(), errNoRows) {
 				return nil, status.Error(codes.NotFound, errEmployeeNotFound)
 			}
+			log.Println("Error while get employee: ", err)
 			return nil, status.Error(codes.Internal, errInternal)
 		}
 		res = svc.toEmployeeProto(emp)

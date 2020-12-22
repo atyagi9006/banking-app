@@ -95,7 +95,8 @@ func (interceptor *AccountService) authorize(ctx context.Context, method string)
 	}
 
 	accessToken := values[0]
-	claims, err := interceptor.jwtManager.Verify(accessToken)
+	res2 := strings.Split(accessToken, " ")
+	claims, err := interceptor.jwtManager.Verify(res2[1])
 	if err != nil {
 		return status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
 	}
@@ -105,6 +106,5 @@ func (interceptor *AccountService) authorize(ctx context.Context, method string)
 			return nil
 		}
 	}
-
 	return status.Error(codes.PermissionDenied, "no permission to access this RPC")
 }
