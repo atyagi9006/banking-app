@@ -1,11 +1,14 @@
 syntax = "proto3";
 package proto;
 
+//option go_package = ".";
+
 import "google/api/annotations.proto";
 
 message PingMessage {
     string greeting = 1;
 }
+
 
 service AuthService {
     rpc SayHello(PingMessage) returns (PingMessage) {
@@ -20,4 +23,20 @@ service AuthService {
              body: "*"
         };
     }
+
+    rpc Login(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+             post: "/v1/auth/signin"
+             body: "*"
+        };
+    }
+
 }
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+  }
+  
+  message LoginResponse { string access_token = 1; }
+  
