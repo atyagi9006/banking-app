@@ -53,7 +53,7 @@ func (svc *AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Lo
 		Email:    req.Username,
 		Password: req.Password,
 	}
-	token, err := svc.accountClient.GenerateToken(newC`tx, &tokenReq)
+	token, err := svc.accountClient.GenerateToken(newCtx, &tokenReq)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}

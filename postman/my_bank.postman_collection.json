@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "1a26ea1b-20d9-49db-b609-6a9e2ec72cf4",
+		"name": "my_bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "accoutn-svc",
+			"item": [
+				{
+					"name": "CreateEmployee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b693e6e4-5c84-4549-a001-3384df6e3fae",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"employee_id\", data[\"id\"]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"a.tyagi7@xyz.com\",\n    \"password\": \"a.ty@123\",\n    \"full_name\": \"amit Tyagi\",\n    \"role\": \"staff\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/employee",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/employee?id={{employee_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{employee_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/employee/{{employee_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"employee",
+								"{{employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ping account service",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "login",
+								"value": "amit",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "passwod",
+								"value": "tyagi",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"greeting\": \"foo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7778/v1/ping",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7778",
+							"path": [
+								"v1",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{admin_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f8c3cfc6-5fb4-4d38-8653-252ddfb7c2ac",
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.environment.get(\"auth_url\")+'/v1/auth/signin',",
+							"    method: 'POST',",
+							" ",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"    \"username\": pm.environment.get(\"admin_user\"),",
+							"    \"password\": pm.environment.get(\"admin_password\")",
+							"})",
+							"    }",
+							"}, function (err, res) {",
+							"    console.log(res);",
+							"    pm.environment.set(\"admin_token\", res.json().access_token);",
+							"    pm.environment.set(\"admin_token_b\", \"Bearer \" +res.json().access_token);",
+							"    //pm.environment.set(\"m_cookie\", \"x-f5aas-ui-css-session=value\");",
+							"    //pm.environment.set(\"customer_email\",\"sandipnirmal13@gmail.com\")",
+							"    console.log(res.json().access_token)",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7667436c-87f6-4ca8-9fd6-09f4744e160d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "auth-svc",
+			"item": [
+				{
+					"name": "signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a075f9f-3517-4583-8863-985b648e6523",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"access_token\", data[\"access_token\"]);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"{{admin_user}}\" ,\n    \"password\": \"{{admin_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/v1/auth/signin",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -13,15 +13,19 @@ import (
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/status"
 )
 
 var (
-	grpcAddress  = fmt.Sprintf("%s:%d", "localhost", 7777)
-	restAddress  = fmt.Sprintf("%s:%d", "localhost", 7778)
-	certFile     = "pkg/cert/server.crt"
-	keyFile      = "pkg/cert/server.key"
-	insecureFlag = flag.Bool("insecure", true, "Run in insecure mode")
+	grpcAddress   = fmt.Sprintf("%s:%d", "localhost", 7777)
+	restAddress   = fmt.Sprintf("%s:%d", "localhost", 7778)
+	certFile      = "pkg/cert/server.crt"
+	keyFile       = "pkg/cert/server.key"
+	insecureFlag  = flag.Bool("insecure", true, "Run in insecure mode")
+	adminEmail    = "a.tyagi@xyz.com"
+	adminPassword = "a.ty@123"
 )
 
 func Run() {
@@ -67,7 +71,8 @@ func startGRPCServer() error {
 	grpcServer := grpc.NewServer(grpcOpts...)
 
 	pb.RegisterAccountServiceServer(grpcServer, accountSvc)
-
+	//seed admin
+	seedAdmin(accountSvc)
 	// start the server
 	log.Printf("starting HTTP/2 gRPC server on %s", grpcAddress)
 	//start grpc server
@@ -108,9 +113,8 @@ func setupGrpcServerOptions(interceptor *api.AccountService) []grpc.ServerOption
 	}
 	// This is where you can setup custom options for the grpc server
 	// https://godoc.org/google.golang.org/grpc#ServerOption
-
-	return []grpc.ServerOption{grpc.UnaryInterceptor(interceptor.Unary())}
 	//return nil
+	return []grpc.ServerOption{grpc.UnaryInterceptor(interceptor.Unary())}
 }
 
 func setupServeMuxOptions() []runtime.ServeMuxOption {
@@ -134,4 +138,20 @@ func setupGrpcDialOptions() []grpc.DialOption {
 	// This is where you can set up your dial options.
 	// https://godoc.org/google.golang.org/grpc#DialOption
 	return []grpc.DialOption{grpc.WithInsecure()}
+}
+
+func seedAdmin(svc *api.AccountService) {
+	log.Println("Seeding admin...")
+	createAdminReq := pb.CreateEmployeeRequest{
+		Email:    adminEmail,
+		Password: adminPassword,
+		FullName: "Admin",
+		Role:     "admin",
+	}
+	_, err := svc.CreateBankEmployee(context.Background(), &createAdminReq)
+	if err != nil {
+		if codes.AlreadyExists != status.Convert(err).Code() {
+			log.Println(err)
+		}
+	}
 }
