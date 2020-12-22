@@ -22,5 +22,5 @@ ORDER BY id
 LIMIT $1
 OFFSET $2;
 
--- name: DeleteAccount :exec
+-- name: DeleteEmployee :exec
 DELETE FROM bank_employee WHERE id = $1;

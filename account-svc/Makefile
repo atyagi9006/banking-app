@@ -44,7 +44,7 @@ api: proto proto-gw proto-swag ## Auto-generate grpc go sources
 dep: ## Get the dependencies
 	@go get -v -d ./...
 
-build-server: dep api ## Build the binary file for server
+build-server: dep api fmt## Build the binary file for server
 	@go build -i -v -o $(SERVER_OUT) $(SERVER_PKG_BUILD)
 
 build-client: dep api ## Build the binary file for client
@@ -59,6 +59,8 @@ help: ## Display this help screen
 .PHONY:run
 run:
 	@bin/server --insecure
-
+.PHONY: fmt
+fmt:
+	@go fmt ./...
 
 include Makefile.bank 

@@ -30,6 +30,18 @@ service AccountService {
         };
     }
 
+    rpc DeleteEmployee(EmployeeIdRequest) returns (EmptyMessage){
+        option (google.api.http)={
+        delete: "/v1/employee/{id}"
+        };
+    }
+
+    rpc GetEmployee (GetEmployeeRequest) returns (Employee) {
+        option (google.api.http) = {
+            get: "/v1/employee"
+        };
+    }
+
 }
 message CreateEmployeeRequest{
     // option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
@@ -50,6 +62,18 @@ message Employee{
     string role = 5;
 }
 
+// empty
+message EmptyMessage {
+}
+
+message EmployeeIdRequest {
+    string id = 1;
+}
+
+message GetEmployeeRequest {
+    string id = 1;
+    string email = 2;
+}
 
 message PingMessage {
     string greeting = 1;

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
@@ -15,14 +16,15 @@ import (
 )
 
 const (
-	errInternal        = "Internal Error"
-	errInvalidEmail    = "Invalid email"
-	errInvalidPassword = "Invalid Password"
-	errEmptyFullName   = "Full Name can't be empty"
-	errInvalidArgument = "Invalid Argument"
-	errInvalidRole     = "Invalid Role"
-	errNoRows          = "no rows"
-	errEmployeeExists  = "Employee already Exists"
+	errInternal         = "Internal Error"
+	errInvalidEmail     = "Invalid email"
+	errInvalidPassword  = "Invalid Password"
+	errEmptyFullName    = "Full Name can't be empty"
+	errInvalidArgument  = "Invalid Argument"
+	errInvalidRole      = "Invalid Role"
+	errNoRows           = "no rows"
+	errEmployeeExists   = "Employee already Exists"
+	errEmployeeNotFound = "Employee not found"
 )
 
 var roles = map[string]string{
@@ -85,6 +87,70 @@ func (svc *AccountService) CreateBankEmployee(ctx context.Context, req *pb.Creat
 	emp := svc.toEmployeeProto(res)
 	return emp, nil
 
+}
+
+func (svc *AccountService) DeleteEmployee(ctx context.Context, req *pb.EmployeeIdRequest) (*pb.EmptyMessage, error) {
+	if req.Id == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+	reqGetEmp := pb.GetEmployeeRequest{
+		Id: req.Id,
+	}
+	getEmpResp, err := svc.GetEmployee(ctx, &reqGetEmp)
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := strconv.ParseInt(getEmpResp.Id, 10, 64)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+	err = svc.store.DeleteEmployee(ctx, id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, errInternal)
+	}
+	return &pb.EmptyMessage{}, nil
+}
+
+func (svc *AccountService) GetEmployee(ctx context.Context, req *pb.GetEmployeeRequest) (*pb.Employee, error) {
+	var res *pb.Employee
+	if req.Id == "" && req.Email == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	if !govalidator.IsEmail(req.Email) && req.Id == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidEmail)
+	}
+
+	if req.Email != "" {
+		emp, err := svc.store.GetEmployeeByEmail(ctx, req.Email)
+		if err != nil {
+			log.Println("Error ", err)
+			if strings.Contains(err.Error(), errNoRows) {
+				return nil, status.Error(codes.NotFound, errEmployeeNotFound)
+			}
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+		res = svc.toEmployeeProto(emp)
+	}
+
+	if req.Id != "" {
+		id, err := strconv.ParseInt(req.Id, 10, 64)
+		if err != nil {
+			return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+		}
+		emp, err := svc.store.GetEmployee(ctx, id)
+		if err != nil {
+			log.Println("Error ", err)
+			if strings.Contains(err.Error(), errNoRows) {
+				return nil, status.Error(codes.NotFound, errEmployeeNotFound)
+			}
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+		res = svc.toEmployeeProto(emp)
+	}
+
+	return res, nil
 }
 
 func (svc *AccountService) fromCreateEmployeeProto(req *pb.CreateEmployeeRequest) db.CreateEmployeeParams {

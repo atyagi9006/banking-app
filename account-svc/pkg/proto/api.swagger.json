@@ -12,6 +12,34 @@
   ],
   "paths": {
     "/v1/employee": {
+      "get": {
+        "operationId": "GetEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmployee"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      },
       "post": {
         "operationId": "CreateBankEmployee",
         "responses": {
@@ -30,6 +58,30 @@
             "schema": {
               "$ref": "#/definitions/protoCreateEmployeeRequest"
             }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
+    "/v1/employee/{id}": {
+      "delete": {
+        "operationId": "DeleteEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmptyMessage"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -99,6 +151,10 @@
           "type": "string"
         }
       }
+    },
+    "protoEmptyMessage": {
+      "type": "object",
+      "title": "empty"
     },
     "protoPingMessage": {
       "type": "object",
