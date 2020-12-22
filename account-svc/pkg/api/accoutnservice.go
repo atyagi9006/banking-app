@@ -5,11 +5,12 @@ import (
 	"log"
 
 	"github.com/atyagi9006/banking-app/account-svc/db"
+	_ "github.com/lib/pq"
 )
 
 const (
 	dbDriver = "postgres"
-	dbSource = "postgresql://root:P@ssw0rd@localhost:5432/simple_bank?sslmode=disable"
+	dbSource = "postgresql://root:P@ssw0rd@localhost:5432/my_bank?sslmode=disable"
 )
 
 type AccountService struct {

@@ -1,12 +1,14 @@
 package start
 
 import (
-	"github.com/atyagi9006/banking-app/account-svc/pkg/api"
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
+
+	"github.com/atyagi9006/banking-app/account-svc/pkg/api"
 
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -14,15 +16,19 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+var (
+	grpcAddress  = fmt.Sprintf("%s:%d", "localhost", 7777)
+	restAddress  = fmt.Sprintf("%s:%d", "localhost", 7778)
+	certFile     = "pkg/cert/server.crt"
+	keyFile      = "pkg/cert/server.key"
+	insecureFlag = flag.Bool("insecure", true, "Run in insecure mode")
+)
+
 func Run() {
 
-	grpcAddress := fmt.Sprintf("%s:%d", "localhost", 7777)
-	restAddress := fmt.Sprintf("%s:%d", "localhost", 7778)
-	certFile := "pkg/cert/server.crt"
-	keyFile := "pkg/cert/server.key"
 	// fire the gRPC server in a goroutine
 	go func() {
-		err := startGRPCServer(grpcAddress, certFile, keyFile)
+		err := startGRPCServer()
 		if err != nil {
 			log.Fatalf("failed to start gRPC server: %s", err)
 		}
@@ -30,9 +36,9 @@ func Run() {
 
 	// fire the REST server in a goroutine
 	go func() {
-		err := startRESTServer(restAddress, grpcAddress, certFile)
+		err := startRESTServer()
 		if err != nil {
-			log.Fatalf("failed to start gRPC server: %s", err)
+			log.Fatalf("failed to start gRPC  GW server: %s", err)
 		}
 	}()
 
@@ -43,9 +49,9 @@ func Run() {
 	select {}
 }
 
-func startGRPCServer(address, certFile, keyFile string) error {
+func startGRPCServer() error {
 	//create a listener on tcp layer
-	lis, err := net.Listen("tcp", address)
+	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -54,24 +60,16 @@ func startGRPCServer(address, certFile, keyFile string) error {
 	// create service hello service
 	accountSvc := api.NewAccountService()
 
-	// Create the TLS credentials
-	creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
-	if err != nil {
-		log.Fatalf("could not load TLS keys: %s", err)
-		return err
-	}
-
 	// Create an array of gRPC options with the credentials
-	opts := []grpc.ServerOption{grpc.Creds(creds),
-		grpc.UnaryInterceptor(unaryInterceptor)}
+	grpcOpts := setupGrpcServerOptions()
 
 	//create grpc service
-	grpcServer := grpc.NewServer(opts...)
+	grpcServer := grpc.NewServer(grpcOpts...)
 
-	pb.RegisterAccountServiceServer(grpcServer, &accountSvc)
+	pb.RegisterAccountServiceServer(grpcServer, accountSvc)
 
 	// start the server
-	log.Printf("starting HTTP/2 gRPC server on %s", address)
+	log.Printf("starting HTTP/2 gRPC server on %s", grpcAddress)
 	//start grpc server
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)
@@ -80,25 +78,58 @@ func startGRPCServer(address, certFile, keyFile string) error {
 	return nil
 }
 
-func startRESTServer(address, grpcAddress, certFile string) error {
+func startRESTServer() error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	creds, err := credentials.NewClientTLSFromFile(certFile, "")
-	if err != nil {
-		return fmt.Errorf("could not load TLS certificate: %s", err)
-	}
-	// Setup the client gRPC options
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
+	svrMuxOpts := setupServeMuxOptions()
+	mux := runtime.NewServeMux(svrMuxOpts...)
 
-	mux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(credMatcher))
-
-	err = pb.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
+	dialOpts := setupGrpcDialOptions()
+	err := pb.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, grpcAddress, dialOpts)
 	if err != nil {
 		return fmt.Errorf("could not register service Ping: %s", err)
 	}
-	log.Printf("starting HTTP/1.1 REST server on %s", address)
-	http.ListenAndServe(address, mux)
+	log.Printf("starting HTTP/1.1 REST server on %s", restAddress)
+	http.ListenAndServe(restAddress, mux)
 	return nil
+}
+
+func setupGrpcServerOptions() []grpc.ServerOption {
+	if !*insecureFlag {
+		// Create the TLS credentials
+		creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
+		if err != nil {
+			log.Fatalf("could not load TLS keys: %s", err)
+		}
+		return []grpc.ServerOption{grpc.Creds(creds),
+			grpc.UnaryInterceptor(unaryInterceptor)}
+	}
+	// This is where you can setup custom options for the grpc server
+	// https://godoc.org/google.golang.org/grpc#ServerOption
+	return nil
+}
+
+func setupServeMuxOptions() []runtime.ServeMuxOption {
+	if !*insecureFlag {
+		return []runtime.ServeMuxOption{
+			runtime.WithIncomingHeaderMatcher(credMatcher),
+		}
+	}
+	return nil
+}
+
+func setupGrpcDialOptions() []grpc.DialOption {
+	if !*insecureFlag {
+		creds, err := credentials.NewClientTLSFromFile(certFile, "")
+		if err != nil {
+			fmt.Errorf("could not load TLS certificate: %s", err)
+		}
+		// Setup the client gRPC options
+		return []grpc.DialOption{grpc.WithTransportCredentials(creds)}
+	}
+	// This is where you can set up your dial options.
+	// https://godoc.org/google.golang.org/grpc#DialOption
+	return []grpc.DialOption{grpc.WithInsecure()}
 }

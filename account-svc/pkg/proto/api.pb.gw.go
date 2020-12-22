@@ -2,11 +2,11 @@
 // source: api.proto
 
 /*
-Package banking_account_v1 is a reverse proxy.
+Package proto is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package banking_account_v1
+package proto
 
 import (
 	"context"
@@ -102,7 +102,6 @@ func local_request_AccountService_CreateBankEmployee_0(ctx context.Context, mars
 // RegisterAccountServiceHandlerServer registers the http handlers for service AccountService to "mux".
 // UnaryRPC     :call AccountServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterAccountServiceHandlerFromEndpoint instead.
 func RegisterAccountServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server AccountServiceServer) error {
 
 	mux.Handle("POST", pattern_AccountService_SayHellogw_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
@@ -232,7 +231,7 @@ func RegisterAccountServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 var (
 	pattern_AccountService_SayHellogw_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "ping"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AccountService_CreateBankEmployee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "ping"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_AccountService_CreateBankEmployee_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "employee"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

@@ -1,5 +1,5 @@
 syntax = "proto3";
-package banking.account.v1;
+package proto;
 
 //option go_package = "github.com/atyagi9006/banking-app/account-svc/pkg/proto;banking_account_v1";
 
@@ -25,7 +25,7 @@ service AccountService {
 
     rpc CreateBankEmployee(CreateEmployeeRequest) returns (Employee) {
         option (google.api.http) = {
-             post: "/v1/ping"
+             post: "/v1/employee"
              body: "*"
         };
     }
@@ -46,7 +46,6 @@ message CreateEmployeeRequest{
 message Employee{
     string id =1;
     string email = 2 ;
-    string password = 3;
     string full_name = 4;
     string role = 5;
 }

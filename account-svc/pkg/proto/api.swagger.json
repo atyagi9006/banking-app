@@ -11,20 +11,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/ping": {
+    "/v1/employee": {
       "post": {
-        "operationId": "AccountService_CreateBankEmployee",
+        "operationId": "CreateBankEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Employee"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
+              "$ref": "#/definitions/protoEmployee"
             }
           }
         },
@@ -34,7 +28,33 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateEmployeeRequest"
+              "$ref": "#/definitions/protoCreateEmployeeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
+    "/v1/ping": {
+      "post": {
+        "operationId": "SayHellogw",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoPingMessage"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoPingMessage"
             }
           }
         ],
@@ -45,40 +65,7 @@
     }
   },
   "definitions": {
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "runtimeError": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "type": "string"
-        },
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
-    "v1CreateEmployeeRequest": {
+    "protoCreateEmployeeRequest": {
       "type": "object",
       "properties": {
         "email": {
@@ -96,16 +83,13 @@
         }
       }
     },
-    "v1Employee": {
+    "protoEmployee": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
         },
         "email": {
-          "type": "string"
-        },
-        "password": {
           "type": "string"
         },
         "full_name": {
@@ -116,7 +100,7 @@
         }
       }
     },
-    "v1PingMessage": {
+    "protoPingMessage": {
       "type": "object",
       "properties": {
         "greeting": {
