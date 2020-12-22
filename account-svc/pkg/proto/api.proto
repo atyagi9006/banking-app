@@ -41,6 +41,7 @@ service AccountService {
             get: "/v1/employee"
         };
     }
+    rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
 
 }
 message CreateEmployeeRequest{
@@ -73,6 +74,14 @@ message EmployeeIdRequest {
 message GetEmployeeRequest {
     string id = 1;
     string email = 2;
+}
+
+message GenerateTokenRequest{
+    string email = 1;
+    string password =2; 
+}
+message GenerateTokenResponse{
+    string token =1;
 }
 
 message PingMessage {

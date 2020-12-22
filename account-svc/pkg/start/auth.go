@@ -43,7 +43,7 @@ func authenticateClient(ctx context.Context, s *api.AccountService) (string, err
 }
 
 // unaryInterceptor calls authenticateClient with current context
-func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func oldunaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	s, ok := info.Server.(*api.AccountService)
 	if !ok {
 		return nil, fmt.Errorf("unable to cast server")
@@ -53,5 +53,9 @@ func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServ
 		return nil, err
 	}
 	ctx = context.WithValue(ctx, clientIDKey, clientID)
+	return handler(ctx, req)
+}
+func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	log.Println("---> unary Interceptor: ", info.FullMethod)
 	return handler(ctx, req)
 }

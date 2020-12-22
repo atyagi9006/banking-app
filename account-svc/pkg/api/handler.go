@@ -86,7 +86,6 @@ func (svc *AccountService) CreateBankEmployee(ctx context.Context, req *pb.Creat
 
 	emp := svc.toEmployeeProto(res)
 	return emp, nil
-
 }
 
 func (svc *AccountService) DeleteEmployee(ctx context.Context, req *pb.EmployeeIdRequest) (*pb.EmptyMessage, error) {

@@ -61,7 +61,7 @@ func startGRPCServer() error {
 	accountSvc := api.NewAccountService()
 
 	// Create an array of gRPC options with the credentials
-	grpcOpts := setupGrpcServerOptions()
+	grpcOpts := setupGrpcServerOptions(accountSvc) //account service is used as a unaryInterceptor
 
 	//create grpc service
 	grpcServer := grpc.NewServer(grpcOpts...)
@@ -96,7 +96,7 @@ func startRESTServer() error {
 	return nil
 }
 
-func setupGrpcServerOptions() []grpc.ServerOption {
+func setupGrpcServerOptions(interceptor *api.AccountService) []grpc.ServerOption {
 	if !*insecureFlag {
 		// Create the TLS credentials
 		creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
@@ -104,11 +104,13 @@ func setupGrpcServerOptions() []grpc.ServerOption {
 			log.Fatalf("could not load TLS keys: %s", err)
 		}
 		return []grpc.ServerOption{grpc.Creds(creds),
-			grpc.UnaryInterceptor(unaryInterceptor)}
+			grpc.UnaryInterceptor(interceptor.Unary())}
 	}
 	// This is where you can setup custom options for the grpc server
 	// https://godoc.org/google.golang.org/grpc#ServerOption
-	return nil
+
+	return []grpc.ServerOption{grpc.UnaryInterceptor(interceptor.Unary())}
+	//return nil
 }
 
 func setupServeMuxOptions() []runtime.ServeMuxOption {

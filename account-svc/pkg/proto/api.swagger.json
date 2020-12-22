@@ -156,6 +156,14 @@
       "type": "object",
       "title": "empty"
     },
+    "protoGenerateTokenResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
     "protoPingMessage": {
       "type": "object",
       "properties": {
