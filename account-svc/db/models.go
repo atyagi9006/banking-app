@@ -9,8 +9,9 @@ import (
 type Account struct {
 	ID        int64     `json:"id"`
 	Owner     int64     `json:"owner"`
-	Balence   int64     `json:"balence"`
+	Balance   int64     `json:"balance"`
 	Currency  string    `json:"currency"`
+	Type      string    `json:"type"`
 	CreatedAt time.Time `json:"created_at"`
 }
 

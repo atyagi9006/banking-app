@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func CreateRamdomUser(t *testing.T, svc *AccountService) *pb.Employee {
+func CreateRamdomEmployee(t *testing.T, svc *AccountService) *pb.Employee {
 	req := pb.CreateEmployeeRequest{Email: randomEmail(),
 		Password: randomPassword(),
 		FullName: randomFullName(),
@@ -139,7 +139,7 @@ func TestCreateEmployee(t *testing.T) {
 			svc := NewAccountService()
 
 			//test
-			emp := CreateRamdomUser(t, svc)
+			emp := CreateRamdomEmployee(t, svc)
 
 			//tear down
 			TearDownRandomUser(t, svc, emp.Id)
@@ -147,7 +147,7 @@ func TestCreateEmployee(t *testing.T) {
 		"create already existing Employee": func() {
 			//setup
 			svc := NewAccountService()
-			emp := CreateRamdomUser(t, svc)
+			emp := CreateRamdomEmployee(t, svc)
 
 			//test
 			req := pb.CreateEmployeeRequest{Email: emp.Email,
@@ -251,7 +251,7 @@ func TestGetEmployee(t *testing.T) {
 		"Get Employee With id success ": func() {
 			//setup
 			svc := NewAccountService()
-			emp := CreateRamdomUser(t, svc)
+			emp := CreateRamdomEmployee(t, svc)
 
 			//test
 			ctx := context.Background()
@@ -259,6 +259,7 @@ func TestGetEmployee(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, resp)
 			assert.NotEmpty(t, resp.Id)
+			assert.Equal(t, emp.Id, resp.Id)
 			assert.Equal(t, emp.Email, resp.Email)
 			assert.Equal(t, emp.FullName, resp.FullName)
 			assert.Equal(t, emp.Role, resp.Role)
@@ -269,7 +270,7 @@ func TestGetEmployee(t *testing.T) {
 		"Get Employee With email success ": func() {
 			//setup
 			svc := NewAccountService()
-			emp := CreateRamdomUser(t, svc)
+			emp := CreateRamdomEmployee(t, svc)
 
 			//test
 			ctx := context.Background()
@@ -277,6 +278,7 @@ func TestGetEmployee(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, resp)
 			assert.NotEmpty(t, resp.Id)
+			assert.Equal(t, emp.Id, resp.Id)
 			assert.Equal(t, emp.Email, resp.Email)
 			assert.Equal(t, emp.FullName, resp.FullName)
 			assert.Equal(t, emp.Role, resp.Role)
@@ -342,7 +344,7 @@ func TestDeleteEmployee(t *testing.T) {
 		"Delete Employee With id success ": func() {
 			//setup
 			svc := NewAccountService()
-			emp := CreateRamdomUser(t, svc)
+			emp := CreateRamdomEmployee(t, svc)
 
 			//test
 			ctx := context.Background()

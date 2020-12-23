@@ -65,7 +65,7 @@ service AccountService {
         };
     }
 
-/*     //accountApi
+    //accountApi
     rpc CreateAccount(CreateAccountRequest) returns (Account) {
         option (google.api.http) = {
              post: "/v1/account"
@@ -75,27 +75,28 @@ service AccountService {
 
     rpc LinkOwner (LinkOwnerRequest) returns (Account) {
         option (google.api.http) = {
-            get: "/v1/account/link"
+            post: "/v1/account/{id}/link"
         };
     }
 
-    rpc GetAccountBalance (GetAccountBalanceRequest) returns (Account) {
+    rpc GetAccount (GetAccountRequest) returns (Account) {
         option (google.api.http) = {
-            get: "/v1/account/balance"
+            get: "/v1/account/{id}"
         };
     }
 
+    //transfer amount between two accounts if currency is same
     rpc TransferAmount (TransferAmountRequest) returns (Account) {
         option (google.api.http) = {
-            get: "/v1/account/link"
+            post: "/v1/account/transfer"
         };
     }
     
     rpc PrintStatement(PrintStatementRequest) returns(PrintStatementResponse){
         option (google.api.http) = {
-            get: "/v1/account/link"
+            get: "/v1/account/{id}/statement"
         };
-    } */
+    }
 
 }
 message CreateEmployeeRequest{
@@ -171,18 +172,32 @@ message CreateAccountRequest{
     string owner = 1;
     string balance = 2;
     string currency =3;
+    string type = 5;
 }
 message Account{
     string owner = 1;
     string balance = 2;
     string currency =3;
+    string type = 5;
     string id=4;
 }
-message LinkOwnerRequest{}
-message GetAccountBalanceRequest{}
-message TransferAmountRequest{}
-message PrintStatementRequest{}
-message PrintStatementResponse{}
+message LinkOwnerRequest{
+    string id = 1;
+    string owner = 2; 
+}
+message GetAccountRequest{
+    string id = 1;
+}
+message TransferAmountRequest{
+    string amount = 1;
+    string from_account_id = 2;
+    string to_account_id = 3;
+}
+message PrintStatementRequest{
+    string id = 1;
+}
+message PrintStatementResponse{
+}
 
 message PingMessage {
     string greeting = 1;

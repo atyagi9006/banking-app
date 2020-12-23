@@ -73,3 +73,15 @@ func randomCurrency() string {
 	n := len(currency)
 	return currency[rand.Intn(n)]
 }
+
+//RandomCurrency generates a random currency Code
+func randomAccountType() string {
+	accountType := []string{"savings", "salary", "loan", "current"}
+	n := len(accountType)
+	return accountType[rand.Intn(n)]
+}
+
+//RandomMoney generates a random amount of money
+func randomMoney() string {
+	return fmt.Sprintf("%v", randomInt(0, 1000))
+}

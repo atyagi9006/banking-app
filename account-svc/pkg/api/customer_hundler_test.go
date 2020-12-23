@@ -299,6 +299,7 @@ func TestGetCustomer(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, resp)
 			assert.NotEmpty(t, resp.Id)
+			assert.Equal(t, cus.Id, resp.Id)
 			assert.Equal(t, cus.Email, resp.Email)
 			assert.Equal(t, cus.FullName, resp.FullName)
 			assert.Equal(t, cus.KycType, resp.KycType)
@@ -317,6 +318,7 @@ func TestGetCustomer(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, resp)
 			assert.NotEmpty(t, resp.Id)
+			assert.Equal(t, cus.Id, resp.Id)
 			assert.Equal(t, cus.Email, resp.Email)
 			assert.Equal(t, cus.FullName, resp.FullName)
 			assert.Equal(t, cus.KycType, resp.KycType)
@@ -335,6 +337,7 @@ func TestGetCustomer(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, resp)
 			assert.NotEmpty(t, resp.Id)
+			assert.Equal(t, cus.Id, resp.Id)
 			assert.Equal(t, cus.Email, resp.Email)
 			assert.Equal(t, cus.FullName, resp.FullName)
 			assert.Equal(t, cus.KycType, resp.KycType)
@@ -490,13 +493,12 @@ func TestUpdateCustomer(t *testing.T) {
 			svc := NewAccountService()
 
 			//test
-			req := pb.CreateCustomerRequest{Email: "test@t.com",
-				Address:  randomAddress(),
-				FullName: "TestName",
-				KycType:  randomKycType(),
+			req := pb.UpdateCustomerRequest{
+				Id:      "test",
+				KycType: randomKycType(),
 			}
 			ctx := context.Background()
-			resp, err := svc.CreateCustomer(ctx, &req)
+			resp, err := svc.UpdateCustomer(ctx, &req)
 			assert.Error(t, err)
 			if e, ok := status.FromError(err); ok {
 				assert.Equal(t, codes.InvalidArgument, e.Code())

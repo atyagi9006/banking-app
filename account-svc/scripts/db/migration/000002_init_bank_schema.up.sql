@@ -11,8 +11,9 @@ CREATE TABLE "customer" (
 CREATE TABLE "accounts" (
   "id" bigserial PRIMARY KEY,
   "owner" bigint NOT NULL,
-  "balence" bigint NOT NULL,
+  "balance" bigint NOT NULL,
   "currency" varchar NOT NULL,
+  "type" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
@@ -30,8 +31,6 @@ CREATE TABLE "transfers" (
   "amount" bigint NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
-
-ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "customer" ("id");
 
 ALTER TABLE "entries" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
 
