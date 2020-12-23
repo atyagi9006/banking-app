@@ -11,6 +11,121 @@
     "application/json"
   ],
   "paths": {
+    "/v1/customer": {
+      "get": {
+        "operationId": "GetCustomer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoCustomer"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      },
+      "post": {
+        "summary": "customer apis",
+        "operationId": "CreateCustomer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoCustomer"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoCreateCustomerRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
+    "/v1/customer/{id}": {
+      "delete": {
+        "operationId": "DeleteCustomer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoEmptyMessage"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateCustomer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoCustomer"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protoUpdateCustomerRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
     "/v1/employee": {
       "get": {
         "operationId": "GetEmployee",
@@ -117,6 +232,26 @@
     }
   },
   "definitions": {
+    "protoCreateCustomerRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "kyc_type": {
+          "type": "string"
+        },
+        "kyc_id": {
+          "type": "string"
+        }
+      }
+    },
     "protoCreateEmployeeRequest": {
       "type": "object",
       "properties": {
@@ -131,6 +266,29 @@
           "type": "string"
         },
         "role": {
+          "type": "string"
+        }
+      }
+    },
+    "protoCustomer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "kyc_type": {
+          "type": "string"
+        },
+        "kyc_id": {
           "type": "string"
         }
       }
@@ -168,6 +326,20 @@
       "type": "object",
       "properties": {
         "greeting": {
+          "type": "string"
+        }
+      }
+    },
+    "protoUpdateCustomerRequest": {
+      "type": "object",
+      "properties": {
+        "kyc_type": {
+          "type": "string"
+        },
+        "kyc_id": {
+          "type": "string"
+        },
+        "id": {
           "type": "string"
         }
       }

@@ -6,11 +6,46 @@ import (
 	"time"
 )
 
+type Account struct {
+	ID        int64     `json:"id"`
+	Owner     int64     `json:"owner"`
+	Balence   int64     `json:"balence"`
+	Currency  string    `json:"currency"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 type BankEmployee struct {
 	ID        int64     `json:"id"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
 	FullName  string    `json:"full_name"`
 	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type Customer struct {
+	ID        int64     `json:"id"`
+	Email     string    `json:"email"`
+	FullName  string    `json:"full_name"`
+	Address   string    `json:"address"`
+	KycType   string    `json:"kyc_type"`
+	KycID     string    `json:"kyc_id"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type Entry struct {
+	ID        int64 `json:"id"`
+	AccountID int64 `json:"account_id"`
+	// can be postive or negative
+	Amount    int64     `json:"amount"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type Transfer struct {
+	ID            int64 `json:"id"`
+	FromAccountID int64 `json:"from_account_id"`
+	ToAccountID   int64 `json:"to_account_id"`
+	// must be positive
+	Amount    int64     `json:"amount"`
 	CreatedAt time.Time `json:"created_at"`
 }

@@ -24,6 +24,7 @@ var (
 	certFile      = "pkg/cert/server.crt"
 	keyFile       = "pkg/cert/server.key"
 	insecureFlag  = flag.Bool("insecure", true, "Run in insecure mode")
+	noAuthFlag    = flag.Bool("no-auth", true, "Run with no auth mode")
 	adminEmail    = "a.tyagi@xyz.com"
 	adminPassword = "a.ty@123"
 )
@@ -114,7 +115,11 @@ func setupGrpcServerOptions(interceptor *api.AccountService) []grpc.ServerOption
 	// This is where you can setup custom options for the grpc server
 	// https://godoc.org/google.golang.org/grpc#ServerOption
 	//return nil
+	if *noAuthFlag {
+		return []grpc.ServerOption{grpc.UnaryInterceptor(unaryInterceptor)}
+	}
 	return []grpc.ServerOption{grpc.UnaryInterceptor(interceptor.Unary())}
+
 }
 
 func setupServeMuxOptions() []runtime.ServeMuxOption {

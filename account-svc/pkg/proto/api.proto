@@ -10,12 +10,7 @@ import "google/api/annotations.proto";
 
 
 service AccountService {
-    rpc SayHello(PingMessage) returns (PingMessage) {
-        // option (google.api.http) = {
-        //     post: "/v1/ping"
-        //     body: "*"
-        // };
-    }
+
     rpc SayHellogw(PingMessage) returns (PingMessage) {
         option (google.api.http) = {
              post: "/v1/ping"
@@ -42,6 +37,65 @@ service AccountService {
         };
     }
     rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
+
+    //customer apis
+    rpc CreateCustomer(CreateCustomerRequest) returns (Customer) {
+        option (google.api.http) = {
+             post: "/v1/customer"
+             body: "*"
+        };
+    }
+
+    rpc UpdateCustomer(UpdateCustomerRequest) returns (Customer) {
+        option (google.api.http) = {
+             put: "/v1/customer/{id}"
+             body: "*"
+        };
+    }
+
+    rpc DeleteCustomer(CustomerIdRequest) returns (EmptyMessage){
+        option (google.api.http)={
+        delete: "/v1/customer/{id}"
+        };
+    }
+
+    rpc GetCustomer (GetCustomerRequest) returns (Customer) {
+        option (google.api.http) = {
+            get: "/v1/customer"
+        };
+    }
+
+/*     //accountApi
+    rpc CreateAccount(CreateAccountRequest) returns (Account) {
+        option (google.api.http) = {
+             post: "/v1/account"
+             body: "*"
+        };
+    }
+
+    rpc LinkOwner (LinkOwnerRequest) returns (Account) {
+        option (google.api.http) = {
+            get: "/v1/account/link"
+        };
+    }
+
+    rpc GetAccountBalance (GetAccountBalanceRequest) returns (Account) {
+        option (google.api.http) = {
+            get: "/v1/account/balance"
+        };
+    }
+
+    rpc TransferAmount (TransferAmountRequest) returns (Account) {
+        option (google.api.http) = {
+            get: "/v1/account/link"
+        };
+    }
+    
+    rpc PrintStatement(PrintStatementRequest) returns(PrintStatementResponse){
+        option (google.api.http) = {
+            get: "/v1/account/link"
+        };
+    } */
 
 }
 message CreateEmployeeRequest{
@@ -84,6 +138,53 @@ message GenerateTokenResponse{
     string token =1;
 }
 
+message CreateCustomerRequest{
+    string email =1; 
+    string full_name = 2;
+    string address = 3;
+    string kyc_type = 4;
+    string kyc_id=5;
+}
+message Customer{
+    string id = 6;
+    string email =1; 
+    string full_name = 2;
+    string address = 3;
+    string kyc_type = 4;
+    string kyc_id=5;
+}
+message UpdateCustomerRequest{
+    string kyc_type = 4;
+    string kyc_id=5;
+    string id =6;
+}
+message CustomerIdRequest{
+    string id = 6;
+}
+message GetCustomerRequest{
+    string id = 6;
+    string email =1; 
+    string name = 2;
+}
+
+message CreateAccountRequest{
+    string owner = 1;
+    string balance = 2;
+    string currency =3;
+}
+message Account{
+    string owner = 1;
+    string balance = 2;
+    string currency =3;
+    string id=4;
+}
+message LinkOwnerRequest{}
+message GetAccountBalanceRequest{}
+message TransferAmountRequest{}
+message PrintStatementRequest{}
+message PrintStatementResponse{}
+
 message PingMessage {
     string greeting = 1;
 }
+
