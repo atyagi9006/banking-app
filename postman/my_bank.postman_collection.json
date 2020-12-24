@@ -234,6 +234,123 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "customer",
+			"item": [
+				{
+					"name": "Create Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a35be85f-895a-4cfc-b77f-bbf1dbcb2eee",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"customer_id\", data[\"id\"])"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"a.tyagi7@xyz.com\",\n    \"address\": \"India pin-123\",\n    \"full_name\": \"amit Tyagi\",\n    \"kyc_type\": \"Pan Card\",\n    \"kyc_id\":\"ab-123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/customer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"kyc_type\": \"Voter Card\",\n    \"kyc_id\":\"ab-1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/customer/{{customer_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/customer/{{customer_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/customer?id={{customer_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"customer"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{customer_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

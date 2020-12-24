@@ -149,11 +149,96 @@ func (svc *AccountService) GetAccount(ctx context.Context, req *pb.GetAccountReq
 }
 
 func (svc *AccountService) TransferAmount(ctx context.Context, req *pb.TransferAmountRequest) (*pb.Account, error) {
-	return nil, nil
+	if req.Amount == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	amt, err := strconv.ParseInt(req.Amount, 10, 64)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	if req.FromAccountId == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	fromAccID, err := strconv.ParseInt(req.FromAccountId, 10, 64)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	if req.ToAccountId == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	toAccID, err := strconv.ParseInt(req.ToAccountId, 10, 64)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+
+	fromAccount, err := svc.store.GetAccount(ctx, fromAccID)
+	if err != nil {
+		if !strings.Contains(err.Error(), errNoRows) {
+			log.Println("Error with create new Account: ", err)
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+	}
+
+	toAccount, err := svc.store.GetAccount(ctx, toAccID)
+	if err != nil {
+		if !strings.Contains(err.Error(), errNoRows) {
+			log.Println("Error with create new Account: ", err)
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+	}
+	trxParam := db.TransferTxParams{
+		FromAccountID: fromAccount.ID,
+		ToAccountID:   toAccount.ID,
+		Amount:        amt,
+	}
+	_, err = svc.store.TransferTx(ctx, trxParam)
+	if err != nil {
+		return nil, status.Error(codes.Internal, errInternal)
+	}
+
+	fromAccountres, err := svc.store.GetAccount(ctx, fromAccID)
+	if err != nil {
+		if !strings.Contains(err.Error(), errNoRows) {
+			log.Println("Error with create new Account: ", err)
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+	}
+	res := svc.toAccountProto(fromAccountres)
+	return res, nil
 }
 
 func (svc *AccountService) PrintStatement(ctx context.Context, req *pb.PrintStatementRequest) (*pb.PrintStatementResponse, error) {
-	return nil, nil
+	if req.Id == "" {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+	accID, err := strconv.ParseInt(req.Id, 10, 64)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, errInvalidArgument)
+	}
+	acc, err := svc.store.GetAccount(ctx, accID)
+	if err != nil {
+		if !strings.Contains(err.Error(), errNoRows) {
+			log.Println("Error with create new Account: ", err)
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+	}
+
+	entries, err := svc.store.GetEntries(ctx, acc.ID)
+	if err != nil {
+		if !strings.Contains(err.Error(), errNoRows) {
+			log.Println("Error with create new Account: ", err)
+			return nil, status.Error(codes.Internal, errInternal)
+		}
+	}
+	res := pb.PrintStatementResponse{
+		Entries: svc.toEntriesProto(entries),
+	}
+	return &res, nil
 }
 
 func (svc *AccountService) fromCreateAccountProto(req *pb.CreateAccountRequest) db.CreateAccountParams {
@@ -171,4 +256,16 @@ func (svc *AccountService) toAccountProto(acc db.Account) *pb.Account {
 		Currency: acc.Currency,
 		Type:     acc.Type,
 	}
+}
+
+func (svc *AccountService) toEntriesProto(entries []db.Entry) []*pb.Entry {
+	var res []*pb.Entry
+	for _, val := range entries {
+		entryRes := pb.Entry{
+			Amount: int32(val.Amount),
+			Date:   val.CreatedAt.String(),
+		}
+		res = append(res, &entryRes)
+	}
+	return res
 }

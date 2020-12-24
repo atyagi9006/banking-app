@@ -16,3 +16,7 @@ WHERE account_id = $1
 ORDER BY id
 LIMIT $2
 OFFSET $3;
+
+-- name: GetEntries :many
+SELECT * FROM entries
+WHERE id = $1 LIMIT 20;

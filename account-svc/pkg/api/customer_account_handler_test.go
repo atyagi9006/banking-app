@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"testing"
 
+	db "github.com/atyagi9006/banking-app/account-svc/db"
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
@@ -13,9 +14,9 @@ import (
 
 func CreateRamdomAccount(t *testing.T, svc *AccountService) *pb.Account {
 	req := pb.CreateAccountRequest{
-		Balance:  randomMoney(),
-		Currency: randomCurrency(),
-		Type:     randomAccountType(),
+		Balance:  db.RandomMoney(),
+		Currency: db.RandomCurrency(),
+		Type:     db.RandomAccountType(),
 	}
 	ctx := context.Background()
 	resp, err := svc.CreateAccount(ctx, &req)
@@ -75,7 +76,7 @@ func TestCreateAccount(t *testing.T) {
 
 			//test
 			req := pb.CreateAccountRequest{
-				Type:     randomAccountType(),
+				Type:     db.RandomAccountType(),
 				Currency: ""}
 			ctx := context.Background()
 			resp, err := svc.CreateAccount(ctx, &req)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	db "github.com/atyagi9006/banking-app/account-svc/db"
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
@@ -11,10 +12,10 @@ import (
 )
 
 func CreateRamdomEmployee(t *testing.T, svc *AccountService) *pb.Employee {
-	req := pb.CreateEmployeeRequest{Email: randomEmail(),
-		Password: randomPassword(),
-		FullName: randomFullName(),
-		Role:     randomRole(),
+	req := pb.CreateEmployeeRequest{Email: db.RandomEmail(),
+		Password: db.RandomPassword(),
+		FullName: db.RandomFullName(),
+		Role:     db.RandomRole(),
 	}
 	ctx := context.Background()
 	resp, err := svc.CreateBankEmployee(ctx, &req)
@@ -153,7 +154,7 @@ func TestCreateEmployee(t *testing.T) {
 			req := pb.CreateEmployeeRequest{Email: emp.Email,
 				Password: "tes@password",
 				FullName: emp.FullName,
-				Role:     randomRole(),
+				Role:     db.RandomRole(),
 			}
 			ctx := context.Background()
 			resp, err := svc.CreateBankEmployee(ctx, &req)

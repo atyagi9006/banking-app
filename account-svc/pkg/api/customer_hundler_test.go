@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	db "github.com/atyagi9006/banking-app/account-svc/db"
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc/codes"
@@ -12,11 +13,11 @@ import (
 
 func CreateRamdomCustomer(t *testing.T, svc *AccountService) *pb.Customer {
 	req := pb.CreateCustomerRequest{
-		Email:    randomEmail(),
-		FullName: randomFullName(),
-		Address:  randomAddress(),
-		KycType:  randomKycType(),
-		KycId:    randomKycID(),
+		Email:    db.RandomEmail(),
+		FullName: db.RandomFullName(),
+		Address:  db.RandomAddress(),
+		KycType:  db.RandomKycType(),
+		KycId:    db.RandomKycID(),
 	}
 	ctx := context.Background()
 	resp, err := svc.CreateCustomer(ctx, &req)
@@ -109,7 +110,7 @@ func TestCreateCustomer(t *testing.T) {
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
-				Address:  randomAddress(),
+				Address:  db.RandomAddress(),
 				FullName: "TestName",
 			}
 			ctx := context.Background()
@@ -127,7 +128,7 @@ func TestCreateCustomer(t *testing.T) {
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
-				Address:  randomAddress(),
+				Address:  db.RandomAddress(),
 				FullName: "TestName",
 				KycType:  "Test",
 			}
@@ -146,9 +147,9 @@ func TestCreateCustomer(t *testing.T) {
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
-				Address:  randomAddress(),
+				Address:  db.RandomAddress(),
 				FullName: "TestName",
-				KycType:  randomKycType(),
+				KycType:  db.RandomKycType(),
 			}
 			ctx := context.Background()
 			resp, err := svc.CreateCustomer(ctx, &req)
@@ -176,10 +177,10 @@ func TestCreateCustomer(t *testing.T) {
 
 			//test
 			req := pb.CreateCustomerRequest{Email: cus.Email,
-				Address:  randomAddress(),
+				Address:  db.RandomAddress(),
 				FullName: cus.FullName,
-				KycType:  randomKycType(),
-				KycId:    randomKycID(),
+				KycType:  db.RandomKycType(),
+				KycId:    db.RandomKycID(),
 			}
 			ctx := context.Background()
 			resp, err := svc.CreateCustomer(ctx, &req)
@@ -495,7 +496,7 @@ func TestUpdateCustomer(t *testing.T) {
 			//test
 			req := pb.UpdateCustomerRequest{
 				Id:      "test",
-				KycType: randomKycType(),
+				KycType: db.RandomKycType(),
 			}
 			ctx := context.Background()
 			resp, err := svc.UpdateCustomer(ctx, &req)
@@ -510,8 +511,8 @@ func TestUpdateCustomer(t *testing.T) {
 			//setup
 			svc := NewAccountService()
 			cus := CreateRamdomCustomer(t, svc)
-			KycType := randomKycType()
-			KycID := randomKycID()
+			KycType := db.RandomKycType()
+			KycID := db.RandomKycID()
 
 			//test
 			req := pb.UpdateCustomerRequest{

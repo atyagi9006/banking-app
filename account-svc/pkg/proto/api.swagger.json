@@ -467,6 +467,18 @@
       "type": "object",
       "title": "empty"
     },
+    "protoEntry": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
     "protoGenerateTokenResponse": {
       "type": "object",
       "properties": {
@@ -484,7 +496,15 @@
       }
     },
     "protoPrintStatementResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protoEntry"
+          }
+        }
+      }
     },
     "protoUpdateCustomerRequest": {
       "type": "object",

@@ -197,8 +197,13 @@ message PrintStatementRequest{
     string id = 1;
 }
 message PrintStatementResponse{
+    repeated Entry entries =1;
 }
 
+message Entry{
+    int32 amount =1;
+    string date=2;
+}
 message PingMessage {
     string greeting = 1;
 }
