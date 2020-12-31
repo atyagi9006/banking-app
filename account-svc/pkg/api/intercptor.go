@@ -19,17 +19,17 @@ func accessibleRoles() map[string][]string {
 		accountServicePath + "GetEmployee":        {"admin", "staff"},
 
 		//customer api
-		accountServicePath + "CreateCustomer": {"staff"},
+		/* accountServicePath + "CreateCustomer": {"staff"},
 		accountServicePath + "UpdateCustomer": {"staff"},
 		accountServicePath + "DeleteCustomer": {"staff"},
-		accountServicePath + "GetCustomer":    {"staff"},
+		accountServicePath + "GetCustomer":    {"staff"}, */
 
 		//account api
-		accountServicePath + "CreateAccount":  {"staff"},
+		/* accountServicePath + "CreateAccount":  {"staff"},
 		accountServicePath + "LinkOwner":      {"staff"},
 		accountServicePath + "GetAccount":     {"staff"},
 		accountServicePath + "TransferAmount": {"staff"},
-		accountServicePath + "PrintStatement": {"staff"},
+		accountServicePath + "PrintStatement": {"staff"}, */
 	}
 }
 

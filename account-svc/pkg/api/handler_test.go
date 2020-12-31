@@ -43,7 +43,10 @@ func TestCreateEmployee(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"create Employee with no data or empty email ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateEmployeeRequest{}
@@ -56,7 +59,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create Employee with invalid email": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateEmployeeRequest{Email: "test@t"}
@@ -69,7 +75,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create Employee with invalid Password": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateEmployeeRequest{Email: "test@t.com", Password: ""}
@@ -82,7 +91,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create Employee with invalid/empty FullName": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateEmployeeRequest{Email: "test@t.com",
@@ -100,7 +112,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create Employee with Empty Role": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateEmployeeRequest{Email: "test@t.com",
@@ -118,7 +133,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create Employee with Invalid Role": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateEmployeeRequest{Email: "test@t.com",
@@ -137,7 +155,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create Employee Success": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			emp := CreateRamdomEmployee(t, svc)
@@ -147,7 +168,10 @@ func TestCreateEmployee(t *testing.T) {
 		},
 		"create already existing Employee": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			emp := CreateRamdomEmployee(t, svc)
 
 			//test
@@ -180,7 +204,10 @@ func TestGetEmployee(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"Get Employee with invalid argument": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -194,7 +221,10 @@ func TestGetEmployee(t *testing.T) {
 		},
 		"Get Employee with invalid email": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -208,7 +238,10 @@ func TestGetEmployee(t *testing.T) {
 		},
 		"Get Non Existing Employee With email": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -223,7 +256,10 @@ func TestGetEmployee(t *testing.T) {
 		},
 		"Get Non Existing Employee With id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -237,7 +273,10 @@ func TestGetEmployee(t *testing.T) {
 		},
 		"Get Employee with invalid id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -251,7 +290,10 @@ func TestGetEmployee(t *testing.T) {
 		},
 		"Get Employee With id success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			emp := CreateRamdomEmployee(t, svc)
 
 			//test
@@ -270,7 +312,10 @@ func TestGetEmployee(t *testing.T) {
 		},
 		"Get Employee With email success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			emp := CreateRamdomEmployee(t, svc)
 
 			//test
@@ -301,7 +346,10 @@ func TestDeleteEmployee(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"Delete Employee with empty id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -316,7 +364,10 @@ func TestDeleteEmployee(t *testing.T) {
 		},
 		"Delete Employee with invalid id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -330,7 +381,10 @@ func TestDeleteEmployee(t *testing.T) {
 		},
 		"Delete Non Existing Employee With id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -344,7 +398,10 @@ func TestDeleteEmployee(t *testing.T) {
 		},
 		"Delete Employee With id success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			emp := CreateRamdomEmployee(t, svc)
 
 			//test

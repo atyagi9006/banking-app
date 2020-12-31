@@ -6,26 +6,22 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/atyagi9006/banking-app/account-svc/pkg/config"
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
 )
 
-const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:P@ssw0rd@localhost:5432/my_bank?sslmode=disable"
-)
-
-func newTestDB(t *testing.T) *sql.DB {
-	var err error
-	testDB, err := sql.Open(dbDriver, dbSource)
+func newTestQueries(t *testing.T) *Queries {
+	c := config.GetConfig().DBConfig
+	conn := fmt.Sprintf(
+		"host=%s port=%s dbname=%s user=%s password=%s sslmode=%s",
+		c.Host, c.Port, c.DBName, c.User, c.Pass, c.SSLMode,
+	)
+	testDB, err := sql.Open(dbDriver, conn)
 	if err != nil {
 		t.Fatal("cannot connect to db", err)
 	}
-	return testDB
-}
-
-func newTestQueries(t *testing.T) *Queries {
-	return New(newTestDB(t))
+	return New(testDB)
 }
 
 func createRandomAccount(t *testing.T) Account {
@@ -48,11 +44,11 @@ func createRandomAccount(t *testing.T) Account {
 }
 
 func TestTransferTx(t *testing.T) {
-	store := NewStore(newTestDB(t))
+	store := testStore(t)
 
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
-	fmt.Println(">> before:", account1.Balance, account2.Balance)
+	t.Log(">> before:", account1.Balance, account2.Balance)
 
 	n := 5
 	amount := int64(10)
@@ -127,7 +123,7 @@ func TestTransferTx(t *testing.T) {
 		assert.Equal(t, account2.ID, toAccount.ID)
 
 		// check balances
-		fmt.Println(">> tx:", fromAccount.Balance, toAccount.Balance)
+		t.Log(">> tx:", fromAccount.Balance, toAccount.Balance)
 
 		diff1 := account1.Balance - fromAccount.Balance
 		diff2 := toAccount.Balance - account2.Balance
@@ -148,18 +144,17 @@ func TestTransferTx(t *testing.T) {
 	updatedAccount2, err := store.GetAccount(context.Background(), account2.ID)
 	assert.NoError(t, err)
 
-	fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
+	t.Log(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
 
 	assert.Equal(t, account1.Balance-int64(n)*amount, updatedAccount1.Balance)
 	assert.Equal(t, account2.Balance+int64(n)*amount, updatedAccount2.Balance)
 }
 
 func TestTransferTxDeadlock(t *testing.T) {
-	store := NewStore(newTestDB(t))
-
+	store := testStore(t)
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
-	fmt.Println(">> before:", account1.Balance, account2.Balance)
+	t.Log(">> before:", account1.Balance, account2.Balance)
 
 	n := 10
 	amount := int64(10)
@@ -197,7 +192,13 @@ func TestTransferTxDeadlock(t *testing.T) {
 	updatedAccount2, err := store.GetAccount(context.Background(), account2.ID)
 	assert.NoError(t, err)
 
-	fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
+	t.Log(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
 	assert.Equal(t, account1.Balance, updatedAccount1.Balance)
 	assert.Equal(t, account2.Balance, updatedAccount2.Balance)
+}
+
+func testStore(t *testing.T) *Store {
+	cfg := config.GetConfig()
+	store := NewStore(cfg.DBConfig)
+	return store
 }

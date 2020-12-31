@@ -47,7 +47,10 @@ func TestCreateCustomer(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"create Customer with no data or empty email ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{}
@@ -60,7 +63,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer with invalid email": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t"}
@@ -73,7 +79,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer with invalid/empty Address": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{
@@ -89,7 +98,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer with invalid/empty FullName": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
@@ -106,7 +118,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer with Empty KycType": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
@@ -124,7 +139,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer with Invalid KycType": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
@@ -143,7 +161,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer with Empty KycID": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateCustomerRequest{Email: "test@t.com",
@@ -162,7 +183,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create Customer Success": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			cus := CreateRamdomCustomer(t, svc)
@@ -172,7 +196,10 @@ func TestCreateCustomer(t *testing.T) {
 		},
 		"create already existing Customer": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			cus := CreateRamdomCustomer(t, svc)
 
 			//test
@@ -206,7 +233,10 @@ func TestGetCustomer(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"Get Customer with invalid argument": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -220,7 +250,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Customer with invalid email": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -234,7 +267,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Non Existing Customer With email": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -249,7 +285,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Non Existing Customer With id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -263,7 +302,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Non Existing Customer name": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -277,7 +319,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Customer with invalid id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -291,7 +336,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Customer With id success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			cus := CreateRamdomCustomer(t, svc)
 
 			//test
@@ -310,7 +358,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Customer With email success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			cus := CreateRamdomCustomer(t, svc)
 
 			//test
@@ -329,7 +380,10 @@ func TestGetCustomer(t *testing.T) {
 		},
 		"Get Customer With full Name success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			cus := CreateRamdomCustomer(t, svc)
 
 			//test
@@ -361,7 +415,10 @@ func TestDeleteCustomer(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"Delete Customer with empty id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -376,7 +433,10 @@ func TestDeleteCustomer(t *testing.T) {
 		},
 		"Delete Customer with invalid id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -390,7 +450,10 @@ func TestDeleteCustomer(t *testing.T) {
 		},
 		"Delete Non Existing Customer With id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -404,7 +467,10 @@ func TestDeleteCustomer(t *testing.T) {
 		},
 		"Delete Customer With id success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			cus := CreateRamdomCustomer(t, svc)
 
 			//test
@@ -428,7 +494,10 @@ func TestUpdateCustomer(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"update Customer with no data  ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.UpdateCustomerRequest{}
@@ -441,7 +510,10 @@ func TestUpdateCustomer(t *testing.T) {
 		},
 		"update Customer by invalid/empty id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.UpdateCustomerRequest{
@@ -456,7 +528,10 @@ func TestUpdateCustomer(t *testing.T) {
 		},
 		"update Customer with Empty KycType": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.UpdateCustomerRequest{
@@ -473,7 +548,10 @@ func TestUpdateCustomer(t *testing.T) {
 		},
 		"update Customer with Invalid KycType": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.UpdateCustomerRequest{
@@ -491,7 +569,10 @@ func TestUpdateCustomer(t *testing.T) {
 		},
 		"update Customer with Empty KycID": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.UpdateCustomerRequest{
@@ -509,7 +590,10 @@ func TestUpdateCustomer(t *testing.T) {
 		},
 		"update already existing Customer Success": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			cus := CreateRamdomCustomer(t, svc)
 			KycType := db.RandomKycType()
 			KycID := db.RandomKycID()

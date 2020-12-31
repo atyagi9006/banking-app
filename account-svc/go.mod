@@ -12,6 +12,8 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/lib/pq v1.9.0
+	github.com/spf13/pflag v1.0.3
+	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/net v0.0.0-20201216054612-986b41b23924 // indirect
 	golang.org/x/sys v0.0.0-20201221093633-bc327ba9c2f0 // indirect

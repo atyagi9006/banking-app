@@ -2,7 +2,7 @@ package start
 
 import (
 	"context"
-	"flag"
+
 	"fmt"
 	"log"
 	"net"
@@ -12,6 +12,7 @@ import (
 
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	flag "github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -19,21 +20,23 @@ import (
 )
 
 var (
-	grpcAddress   = fmt.Sprintf("%s:%d", "localhost", 7777)
-	restAddress   = fmt.Sprintf("%s:%d", "localhost", 7778)
 	certFile      = "pkg/cert/server.crt"
 	keyFile       = "pkg/cert/server.key"
 	insecureFlag  = flag.Bool("insecure", true, "Run in insecure mode")
 	noAuthFlag    = flag.Bool("no-auth", true, "Run with no auth mode")
+	addressFlag   = flag.String("acc-grpc-ip", "", "gRPC listening IP")
+	portFlag      = flag.Uint16("grpc-port", 7777, "gRPC listening port")
+	gwPortFlag    = flag.Uint16("rest-port", 7778, "REST gateway port")
 	adminEmail    = "a.tyagi@xyz.com"
 	adminPassword = "a.ty@123"
 )
 
 func Run() {
-
+	grpcAddress := grpcAddressStr()
+	restAddress := restAddressStr()
 	// fire the gRPC server in a goroutine
 	go func() {
-		err := startGRPCServer()
+		err := startGRPCServer(grpcAddress)
 		if err != nil {
 			log.Fatalf("failed to start gRPC server: %s", err)
 		}
@@ -41,7 +44,7 @@ func Run() {
 
 	// fire the REST server in a goroutine
 	go func() {
-		err := startRESTServer()
+		err := startRESTServer(grpcAddress, restAddress)
 		if err != nil {
 			log.Fatalf("failed to start gRPC  GW server: %s", err)
 		}
@@ -54,7 +57,7 @@ func Run() {
 	select {}
 }
 
-func startGRPCServer() error {
+func startGRPCServer(grpcAddress string) error {
 	//create a listener on tcp layer
 	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
@@ -63,7 +66,10 @@ func startGRPCServer() error {
 	}
 
 	// create service hello service
-	accountSvc := api.NewAccountService()
+	accountSvc, err := api.NewAccountService()
+	if err != nil {
+		return err
+	}
 
 	// Create an array of gRPC options with the credentials
 	grpcOpts := setupGrpcServerOptions(accountSvc) //account service is used as a unaryInterceptor
@@ -84,7 +90,7 @@ func startGRPCServer() error {
 	return nil
 }
 
-func startRESTServer() error {
+func startRESTServer(grpcAddress, restAddress string) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -119,7 +125,6 @@ func setupGrpcServerOptions(interceptor *api.AccountService) []grpc.ServerOption
 		return []grpc.ServerOption{grpc.UnaryInterceptor(unaryInterceptor)}
 	}
 	return []grpc.ServerOption{grpc.UnaryInterceptor(interceptor.Unary())}
-
 }
 
 func setupServeMuxOptions() []runtime.ServeMuxOption {
@@ -159,4 +164,19 @@ func seedAdmin(svc *api.AccountService) {
 			log.Println(err)
 		}
 	}
+}
+
+//gRPCAddress
+func grpcAddressStr() string {
+	if *addressFlag == "" {
+		*addressFlag = "localhost"
+	}
+	return fmt.Sprintf("%s:%d", addressFlag, portFlag)
+}
+
+func restAddressStr() string {
+	if *addressFlag == "" {
+		*addressFlag = "localhost"
+	}
+	return fmt.Sprintf("%s:%d", addressFlag, gwPortFlag)
 }

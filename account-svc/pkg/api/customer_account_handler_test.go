@@ -46,7 +46,10 @@ func TestCreateAccount(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"create Account with no data or empty AccountType ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateAccountRequest{}
@@ -59,7 +62,10 @@ func TestCreateAccount(t *testing.T) {
 		},
 		"create Account with invalid AccountType": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateAccountRequest{Type: "test@t"}
@@ -72,7 +78,10 @@ func TestCreateAccount(t *testing.T) {
 		},
 		"create Account with invalid/empty Currency": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.CreateAccountRequest{
@@ -87,7 +96,10 @@ func TestCreateAccount(t *testing.T) {
 		},
 		"create Account Success": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			acc := CreateRamdomAccount(t, svc)
@@ -109,7 +121,10 @@ func TestGetAccount(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"Get Account with invalid argument": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -123,7 +138,10 @@ func TestGetAccount(t *testing.T) {
 		},
 		"Get Non Existing Account With id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -137,7 +155,10 @@ func TestGetAccount(t *testing.T) {
 		},
 		"Get Account with invalid id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			ctx := context.Background()
@@ -151,7 +172,10 @@ func TestGetAccount(t *testing.T) {
 		},
 		"Get Account With id success ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			acc := CreateRamdomAccount(t, svc)
 
 			//test
@@ -182,7 +206,10 @@ func TestLinkOwner(t *testing.T) {
 	testCases := map[string]testBuilder{
 		"link Owner with no data  ": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.LinkOwnerRequest{}
@@ -195,7 +222,10 @@ func TestLinkOwner(t *testing.T) {
 		},
 		"link Owner by invalid/empty  account id": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.LinkOwnerRequest{
@@ -210,7 +240,10 @@ func TestLinkOwner(t *testing.T) {
 		},
 		"link Owner with Empty owner": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			//test
 			req := pb.LinkOwnerRequest{
@@ -227,7 +260,10 @@ func TestLinkOwner(t *testing.T) {
 		},
 		"link Owner Success": func() {
 			//setup
-			svc := NewAccountService()
+			svc, err := NewAccountService()
+			if err != nil {
+				t.Fatal(err)
+			}
 			acc := CreateRamdomAccount(t, svc)
 			customer := CreateRamdomCustomer(t, svc)
 

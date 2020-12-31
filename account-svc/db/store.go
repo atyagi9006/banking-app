@@ -4,6 +4,17 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
+
+	"github.com/atyagi9006/banking-app/account-svc/pkg/config"
+	_ "github.com/lib/pq"
+)
+
+const (
+	dbDriver = "postgres"
+	//dbSource = "postgresql://root:P@ssw0rd@localhost:5432/my_bank?sslmode=disable"
+	//postgresql://%s:%s@%s:%s/?sslmode=disable
+
 )
 
 type Store struct {
@@ -11,7 +22,15 @@ type Store struct {
 	*Queries
 }
 
-func NewStore(db *sql.DB) *Store {
+func NewStore(c *config.SQLConfig) *Store {
+	conn := fmt.Sprintf(
+		"host=%s port=%s dbname=%s user=%s password=%s sslmode=%s",
+		c.Host, c.Port, c.DBName, c.User, c.Pass, c.SSLMode,
+	)
+	db, err := sql.Open(dbDriver, conn)
+	if err != nil {
+		log.Fatal("cannot connect to db", err)
+	}
 	return &Store{
 		db:      db,
 		Queries: New(db),
