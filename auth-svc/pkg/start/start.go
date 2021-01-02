@@ -2,7 +2,6 @@ package start
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -12,13 +11,15 @@ import (
 
 	pb "github.com/atyagi9006/banking-app/auth-svc/pkg/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	flag "github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
 
 var (
-	grpcAddress  = fmt.Sprintf("%s:%d", "localhost", 7779)
-	restAddress  = fmt.Sprintf("%s:%d", "localhost", 7780)
+	addressFlag  = flag.String("acc-grpc-ip", "", "gRPC listening IP")
+	portFlag     = flag.Uint16("grpc-port", 7779, "gRPC listening port")
+	gwPortFlag   = flag.Uint16("rest-port", 7780, "REST gateway port")
 	certFile     = "pkg/cert/server.crt"
 	keyFile      = "pkg/cert/server.key"
 	insecureFlag = flag.Bool("insecure", true, "Run in insecure mode")
@@ -26,9 +27,12 @@ var (
 
 func Run() {
 
+	grpcAddress := grpcAddressStr()
+	restAddress := restAddressStr()
+
 	// fire the gRPC server in a goroutine
 	go func() {
-		err := startGRPCServer()
+		err := startGRPCServer(grpcAddress)
 		if err != nil {
 			log.Fatalf("failed to start gRPC server: %s", err)
 		}
@@ -36,7 +40,7 @@ func Run() {
 
 	// fire the REST server in a goroutine
 	go func() {
-		err := startRESTServer()
+		err := startRESTServer(grpcAddress, restAddress)
 		if err != nil {
 			log.Fatalf("failed to start gRPC  GW server: %s", err)
 		}
@@ -49,7 +53,7 @@ func Run() {
 	select {}
 }
 
-func startGRPCServer() error {
+func startGRPCServer(grpcAddress string) error {
 	//create a listener on tcp layer
 	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
@@ -78,7 +82,7 @@ func startGRPCServer() error {
 	return nil
 }
 
-func startRESTServer() error {
+func startRESTServer(grpcAddress, restAddress string) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -133,4 +137,19 @@ func setupGrpcDialOptions() []grpc.DialOption {
 	// This is where you can set up your dial options.
 	// https://godoc.org/google.golang.org/grpc#DialOption
 	return []grpc.DialOption{grpc.WithInsecure()}
+}
+
+//gRPCAddress
+func grpcAddressStr() string {
+	if *addressFlag == "" {
+		*addressFlag = "localhost"
+	}
+	return fmt.Sprintf("%s:%d", *addressFlag, *portFlag)
+}
+
+func restAddressStr() string {
+	if *addressFlag == "" {
+		*addressFlag = "localhost"
+	}
+	return fmt.Sprintf("%s:%d", *addressFlag, *gwPortFlag)
 }

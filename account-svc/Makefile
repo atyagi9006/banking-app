@@ -59,8 +59,14 @@ help: ## Display this help screen
 .PHONY:run
 run:
 	@bin/server --insecure
+
 .PHONY: fmt
 fmt:
 	@go fmt ./...
+
+.PHONY: fmt-imp
+fmt-imp: ; $(info Running goimports...) @
+	@go get -u golang.org/x/tools/cmd/goimports
+	@goimports -l -w -e $$(find . -type f -name '*.go' -not -path "./vendor/*")
 
 include Makefile.bank 

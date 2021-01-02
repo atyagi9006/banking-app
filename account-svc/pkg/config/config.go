@@ -7,7 +7,8 @@ func init() {
 }
 
 type SVCConfig struct {
-	DBConfig *SQLConfig
+	DBConfig  *SQLConfig
+	OPAConfig *OPAConfig
 }
 
 type SQLConfig struct {
@@ -19,7 +20,7 @@ type SQLConfig struct {
 	SSLMode string
 }
 
-type OpaConfig struct {
+type OPAConfig struct {
 	Enabled  bool
 	Endpoint string
 }
@@ -37,6 +38,10 @@ func setViperDefaults() {
 	viper.SetDefault("postgres_user", "root")
 	viper.SetDefault("postgres_password", "P@ssw0rd")
 	viper.SetDefault("postgres_ssl_mode", "disable")
+
+	// opa defaults
+	viper.SetDefault("OPA_ENABLED", true)
+	viper.SetDefault("OPA_ENDPOINT", "http://localhost:8181")
 }
 
 // GetConfig returns an instance of config, is used internally
@@ -49,8 +54,14 @@ func GetConfig() *SVCConfig {
 		Pass:    viper.GetString("postgres_password"),
 		SSLMode: viper.GetString("postgres_ssl_mode"),
 	}
-	conf := SVCConfig{
-		DBConfig: &dbConfig,
+	opaConfig := OPAConfig{
+		Enabled:  viper.GetBool("OPA_ENABLED"),
+		Endpoint: viper.GetString("OPA_ENDPOINT"),
 	}
+	conf := SVCConfig{
+		DBConfig:  &dbConfig,
+		OPAConfig: &opaConfig,
+	}
+
 	return &conf
 }

@@ -171,12 +171,12 @@ func grpcAddressStr() string {
 	if *addressFlag == "" {
 		*addressFlag = "localhost"
 	}
-	return fmt.Sprintf("%s:%d", addressFlag, portFlag)
+	return fmt.Sprintf("%s:%d", *addressFlag, *portFlag)
 }
 
 func restAddressStr() string {
 	if *addressFlag == "" {
 		*addressFlag = "localhost"
 	}
-	return fmt.Sprintf("%s:%d", addressFlag, gwPortFlag)
+	return fmt.Sprintf("%s:%d", *addressFlag, *gwPortFlag)
 }
