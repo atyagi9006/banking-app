@@ -1,15 +1,37 @@
 package api
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"log"
 	"strings"
 
+	"github.com/atyagi9006/banking-app/account-svc/auth"
+	"github.com/atyagi9006/opa-authz/opa"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
+
+//var (
+// headerForwardedMethod sets an HTTP request method in gRPC gateway
+//headerForwardedMethod = "x-forwarded-method"
+
+// headerForwardedRequestURI sets an HTTP request URI in gRPC gateway
+//headerForwardedRequestURI = "x-forwarded-request-uri"
+//)
+
+type Request struct {
+	Path   []string `json:"path"`
+	Method string   `json:"method"`
+}
+type Input struct {
+	Request  Request           `json:"request"`
+	UserRole map[string]string `json:"user_roles"`
+	UserID   string            `json:"user_id"`
+}
 
 func accessibleRoles() map[string][]string {
 	const accountServicePath = "/proto.AccountService/"
@@ -53,21 +75,23 @@ func (interceptor *AccountService) Unary() grpc.UnaryServerInterceptor {
 }
 
 func (interceptor *AccountService) authorize(ctx context.Context, method string) error {
-	if md, ok := metadata.FromIncomingContext(ctx); ok { //this bypass the grpc internal calls
-		clientLogin := strings.Join(md["mode"], "")
-		if clientLogin == "internal" {
-			return nil
-		}
-	}
-	accessibleRoles, ok := interceptor.accessibleRoles[method]
-	if !ok {
-		// everyone can access
-		return nil
-	}
+	log.Println("$$$$$$ inside auth ")
+	// accessibleRoles, ok := interceptor.accessibleRoles[method]
+	// if !ok {
+	// 	// everyone can access
+	// 	return nil
+	// }
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return status.Errorf(codes.Unauthenticated, "metadata is not provided")
+	}
+
+	log.Println("$$$$$$MD ctx: ", md)
+
+	clientLogin := strings.Join(md["mode"], "")
+	if clientLogin == "internal" {
+		return nil
 	}
 
 	values := md["authorization"]
@@ -82,10 +106,55 @@ func (interceptor *AccountService) authorize(ctx context.Context, method string)
 		return status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
 	}
 
-	for _, role := range accessibleRoles {
-		if role == claims.Role {
-			return nil
-		}
+	opaData := interceptor.getOPAData(method, claims)
+
+	allow, err := interceptor.opaClient.Authorize(context.Background(), "opa/authz", opaData)
+	log.Println("$$$$$$OPA res: ", allow)
+	if allow {
+		return nil
 	}
+
+	// for _, role := range accessibleRoles {
+	// 	if role == claims.Role {
+	// 		return nil
+	// 	}
+	// }
 	return status.Error(codes.PermissionDenied, "no permission to access this RPC")
+}
+
+func (interceptor *AccountService) getOPAData(method string, claims *auth.UserClaims) *bytes.Buffer {
+	data := Request{
+		Path: splitURI(method),
+	}
+
+	// if val, ok := md[headerForwardedMethod]; ok && len(val) > 0 {
+	// 	data.Method = val[0]
+	// }
+
+	// if val, ok := md[headerForwardedRequestURI]; ok && len(val) > 0 {
+	// 	data.Path = splitURI(val[0])
+	// }
+	roles := make(map[string]string)
+	roles[claims.Username] = claims.Role
+
+	body := opa.Input{
+		Input: Input{
+			Request:  data,
+			UserRole: roles,
+			UserID:   claims.Username,
+		},
+	}
+
+	var b bytes.Buffer
+	if err := json.NewEncoder(&b).Encode(body); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("$$$$$$OPA DAta: ", b.String())
+	log.Println("$$$$$$ exit auth ")
+	return &b
+}
+
+func splitURI(s string) []string {
+	return strings.Split(strings.Trim(s, "/"), "/")
 }

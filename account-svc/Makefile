@@ -8,6 +8,8 @@ SERVER_PKG_BUILD := "${PKG}/server"
 CLIENT_PKG_BUILD := "${PKG}/client"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
+GOPRIVATE := "github.com/atyagi9006/*"
+
 .PHONY: all api build_server build_client proto proto-gw
 
 all: build_server build_client
@@ -58,7 +60,7 @@ help: ## Display this help screen
 
 .PHONY:run
 run:
-	@bin/server --insecure
+	@bin/server 
 
 .PHONY: fmt
 fmt:
@@ -68,5 +70,22 @@ fmt:
 fmt-imp: ; $(info Running goimports...) @
 	@go get -u golang.org/x/tools/cmd/goimports
 	@goimports -l -w -e $$(find . -type f -name '*.go' -not -path "./vendor/*")
+
+ .PHONY: run-opa
+run-opa: stop-opa
+	docker run --name opaDev -d -p 8181:8181 openpolicyagent/opa run --server --log-level debug
+
+.PHONY: stop-opa
+stop-opa:
+	docker stop opaDev && docker rm opaDev
+
+.PHONY:opa-test
+opa-test:
+	opa test ./rego -v
+	
+.PHONY: mod
+mod:
+	export GOPRIVATE=$(GOPRIVATE) \
+	&& go mod tidy
 
 include Makefile.bank 

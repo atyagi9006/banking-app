@@ -23,7 +23,7 @@ var (
 	certFile      = "pkg/cert/server.crt"
 	keyFile       = "pkg/cert/server.key"
 	insecureFlag  = flag.Bool("insecure", true, "Run in insecure mode")
-	noAuthFlag    = flag.Bool("no-auth", true, "Run with no auth mode")
+	authFlag      = flag.Bool("auth", true, "Run with no auth mode")
 	addressFlag   = flag.String("acc-grpc-ip", "", "gRPC listening IP")
 	portFlag      = flag.Uint16("grpc-port", 7777, "gRPC listening port")
 	gwPortFlag    = flag.Uint16("rest-port", 7778, "REST gateway port")
@@ -121,7 +121,7 @@ func setupGrpcServerOptions(interceptor *api.AccountService) []grpc.ServerOption
 	// This is where you can setup custom options for the grpc server
 	// https://godoc.org/google.golang.org/grpc#ServerOption
 	//return nil
-	if *noAuthFlag {
+	if !*authFlag {
 		return []grpc.ServerOption{grpc.UnaryInterceptor(unaryInterceptor)}
 	}
 	return []grpc.ServerOption{grpc.UnaryInterceptor(interceptor.Unary())}
