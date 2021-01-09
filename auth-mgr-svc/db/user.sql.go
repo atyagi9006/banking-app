@@ -7,7 +7,7 @@ import (
 	"context"
 )
 
-const createusers = `-- name: Createusers :one
+const createUser = `-- name: CreateUser :one
 INSERT INTO users (
     email, 
     password,
@@ -17,14 +17,14 @@ INSERT INTO users (
 ) RETURNING id, email, password, role, created_at
 `
 
-type CreateusersParams struct {
+type CreateUserParams struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Role     string `json:"role"`
 }
 
-func (q *Queries) Createusers(ctx context.Context, arg CreateusersParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createusers, arg.Email, arg.Password, arg.Role)
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, createUser, arg.Email, arg.Password, arg.Role)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -36,22 +36,22 @@ func (q *Queries) Createusers(ctx context.Context, arg CreateusersParams) (User,
 	return i, err
 }
 
-const deleteusers = `-- name: Deleteusers :exec
+const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users WHERE id = $1
 `
 
-func (q *Queries) Deleteusers(ctx context.Context, id int64) error {
-	_, err := q.db.ExecContext(ctx, deleteusers, id)
+func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
+	_, err := q.db.ExecContext(ctx, deleteUser, id)
 	return err
 }
 
-const getusers = `-- name: Getusers :one
+const getUser = `-- name: GetUser :one
 SELECT id, email, password, role, created_at FROM users
 WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) Getusers(ctx context.Context, id int64) (User, error) {
-	row := q.db.QueryRowContext(ctx, getusers, id)
+func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUser, id)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -63,13 +63,13 @@ func (q *Queries) Getusers(ctx context.Context, id int64) (User, error) {
 	return i, err
 }
 
-const getusersByEmail = `-- name: GetusersByEmail :one
+const getUserByEmail = `-- name: GetUserByEmail :one
 SELECT id, email, password, role, created_at FROM users
 WHERE email = $1 LIMIT 1
 `
 
-func (q *Queries) GetusersByEmail(ctx context.Context, email string) (User, error) {
-	row := q.db.QueryRowContext(ctx, getusersByEmail, email)
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -81,20 +81,20 @@ func (q *Queries) GetusersByEmail(ctx context.Context, email string) (User, erro
 	return i, err
 }
 
-const listusers = `-- name: Listusers :many
+const listUsers = `-- name: ListUsers :many
 SELECT id, email, password, role, created_at FROM users
 ORDER BY id
 LIMIT $1
 OFFSET $2
 `
 
-type ListusersParams struct {
+type ListUsersParams struct {
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
 
-func (q *Queries) Listusers(ctx context.Context, arg ListusersParams) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listusers, arg.Limit, arg.Offset)
+func (q *Queries) ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, listUsers, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}

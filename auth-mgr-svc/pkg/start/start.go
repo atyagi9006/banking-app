@@ -59,7 +59,10 @@ func startGRPCServer(grpcAddress string) error {
 	}
 
 	// create service hello service
-	authSvc := api.NewAuthMgrService()
+	authSvc, err := api.NewAuthMgrService()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Create an array of gRPC options with the credentials
 	grpcOpts := setupGrpcServerOptions() //account service is used as a unaryInterceptor
