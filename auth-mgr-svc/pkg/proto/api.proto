@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+//option go_package = ".";
+
+import "google/api/annotations.proto";
+
+
+service AuthService {
+    rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
+}
+
+message GenerateTokenRequest{
+    string email = 1;
+    string password =2; 
+}
+
+message GenerateTokenResponse{
+    string token =1;
+}
+  
