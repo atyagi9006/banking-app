@@ -1,6 +1,6 @@
 module github.com/atyagi9006/banking-app/auth-svc
 
-go 1.14
+go 1.15
 
 require (
 	github.com/atyagi9006/banking-app/account-svc v0.0.0-20201222175236-ae7132744284
