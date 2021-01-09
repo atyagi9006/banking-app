@@ -1,15 +1,12 @@
 package start
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
-	"net/http"
 
-	"github.com/atyagi9006/banking-app/auth-mrg-svc/pkg/api"
-	pb "github.com/atyagi9006/banking-app/auth-mrg-svc/pkg/proto"
-
+	"github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/api"
+	pb "github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	flag "github.com/spf13/pflag"
 	"google.golang.org/grpc"
@@ -39,12 +36,12 @@ func Run() {
 	}()
 
 	// fire the REST server in a goroutine
-	go func() {
+	/* go func() {
 		err := startRESTServer(grpcAddress, restAddress)
 		if err != nil {
 			log.Fatalf("failed to start gRPC  GW server: %s", err)
 		}
-	}()
+	}() */
 
 	log.Println("GRPC-server started at ", grpcAddress)
 	log.Println("GRPC-GW-server started at ", restAddress)
@@ -82,24 +79,6 @@ func startGRPCServer(grpcAddress string) error {
 	return nil
 }
 
-func startRESTServer(grpcAddress, restAddress string) error {
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	svrMuxOpts := setupServeMuxOptions()
-	mux := runtime.NewServeMux(svrMuxOpts...)
-
-	dialOpts := setupGrpcDialOptions()
-	err := pb.RegisterAuthMgrServiceHandlerFromEndpoint(ctx, mux, grpcAddress, dialOpts)
-	if err != nil {
-		return fmt.Errorf("could not register service Ping: %s", err)
-	}
-	log.Printf("starting HTTP/1.1 REST server on %s", restAddress)
-	http.ListenAndServe(restAddress, mux)
-	return nil
-}
-
 func setupGrpcServerOptions() []grpc.ServerOption {
 	if !*insecureFlag {
 		// Create the TLS credentials
@@ -117,11 +96,6 @@ func setupGrpcServerOptions() []grpc.ServerOption {
 }
 
 func setupServeMuxOptions() []runtime.ServeMuxOption {
-	if !*insecureFlag {
-		return []runtime.ServeMuxOption{
-			runtime.WithIncomingHeaderMatcher(credMatcher),
-		}
-	}
 	return nil
 }
 

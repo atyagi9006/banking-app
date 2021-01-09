@@ -6,7 +6,7 @@ import (
 
 	accountClient "github.com/atyagi9006/banking-app/account-svc/client"
 	accountpb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
-	pb "github.com/atyagi9006/banking-app/auth-mrg-svc/pkg/proto"
+	pb "github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/proto"
 )
 
 type AuthMgrService struct {

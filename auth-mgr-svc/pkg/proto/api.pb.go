@@ -121,7 +121,7 @@ func init() {
 }
 
 var fileDescriptor_00212fb1f9d3bf1c = []byte{
-	// 187 bytes of a gzipped FileDescriptorProto
+	// 190 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4c, 0x2c, 0xc8, 0xd4,
 	0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x53, 0x52, 0x32, 0xe9, 0xf9, 0xf9, 0xe9, 0x39,
 	0xa9, 0xfa, 0x89, 0x05, 0x99, 0xfa, 0x89, 0x79, 0x79, 0xf9, 0x25, 0x89, 0x25, 0x99, 0xf9, 0x79,
@@ -130,10 +130,10 @@ var fileDescriptor_00212fb1f9d3bf1c = []byte{
 	0xb9, 0x89, 0x99, 0x39, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x10, 0x8e, 0x90, 0x14, 0x17,
 	0x47, 0x41, 0x62, 0x71, 0x71, 0x79, 0x7e, 0x51, 0x8a, 0x04, 0x13, 0x58, 0x02, 0xce, 0x57, 0xd2,
 	0xe5, 0x12, 0x45, 0x33, 0xa9, 0xb8, 0x20, 0x3f, 0xaf, 0x38, 0x15, 0x64, 0x54, 0x09, 0x48, 0x00,
-	0x66, 0x14, 0x98, 0x63, 0x14, 0xcd, 0xc5, 0xed, 0x58, 0x5a, 0x92, 0x11, 0x9c, 0x5a, 0x54, 0x96,
-	0x99, 0x9c, 0x2a, 0xe4, 0xc3, 0xc5, 0x8b, 0xa2, 0x5b, 0x48, 0x1a, 0xe2, 0x40, 0x3d, 0x6c, 0xae,
-	0x93, 0x92, 0xc1, 0x2e, 0x09, 0xb1, 0x50, 0x89, 0x21, 0x89, 0x0d, 0x2c, 0x6d, 0x0c, 0x08, 0x00,
-	0x00, 0xff, 0xff, 0x19, 0x8d, 0x79, 0x24, 0x0e, 0x01, 0x00, 0x00,
+	0x66, 0x14, 0x98, 0x63, 0x14, 0xc7, 0xc5, 0xe7, 0x58, 0x5a, 0x92, 0xe1, 0x9b, 0x5e, 0x14, 0x9c,
+	0x5a, 0x54, 0x96, 0x99, 0x9c, 0x2a, 0xe4, 0xc3, 0xc5, 0x8b, 0x62, 0x80, 0x90, 0x34, 0xc4, 0x8d,
+	0x7a, 0xd8, 0x1c, 0x28, 0x25, 0x83, 0x5d, 0x12, 0x62, 0xa7, 0x12, 0x43, 0x12, 0x1b, 0x58, 0xda,
+	0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x6a, 0x18, 0xa5, 0x0b, 0x11, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -144,72 +144,72 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// AuthServiceClient is the client API for AuthService service.
+// AuthMgrServiceClient is the client API for AuthMgrService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type AuthServiceClient interface {
+type AuthMgrServiceClient interface {
 	GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...grpc.CallOption) (*GenerateTokenResponse, error)
 }
 
-type authServiceClient struct {
+type authMgrServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
-	return &authServiceClient{cc}
+func NewAuthMgrServiceClient(cc grpc.ClientConnInterface) AuthMgrServiceClient {
+	return &authMgrServiceClient{cc}
 }
 
-func (c *authServiceClient) GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...grpc.CallOption) (*GenerateTokenResponse, error) {
+func (c *authMgrServiceClient) GenerateToken(ctx context.Context, in *GenerateTokenRequest, opts ...grpc.CallOption) (*GenerateTokenResponse, error) {
 	out := new(GenerateTokenResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/GenerateToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.AuthMgrService/GenerateToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AuthServiceServer is the server API for AuthService service.
-type AuthServiceServer interface {
+// AuthMgrServiceServer is the server API for AuthMgrService service.
+type AuthMgrServiceServer interface {
 	GenerateToken(context.Context, *GenerateTokenRequest) (*GenerateTokenResponse, error)
 }
 
-// UnimplementedAuthServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedAuthServiceServer struct {
+// UnimplementedAuthMgrServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedAuthMgrServiceServer struct {
 }
 
-func (*UnimplementedAuthServiceServer) GenerateToken(ctx context.Context, req *GenerateTokenRequest) (*GenerateTokenResponse, error) {
+func (*UnimplementedAuthMgrServiceServer) GenerateToken(ctx context.Context, req *GenerateTokenRequest) (*GenerateTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateToken not implemented")
 }
 
-func RegisterAuthServiceServer(s *grpc.Server, srv AuthServiceServer) {
-	s.RegisterService(&_AuthService_serviceDesc, srv)
+func RegisterAuthMgrServiceServer(s *grpc.Server, srv AuthMgrServiceServer) {
+	s.RegisterService(&_AuthMgrService_serviceDesc, srv)
 }
 
-func _AuthService_GenerateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthMgrService_GenerateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GenerateToken(ctx, in)
+		return srv.(AuthMgrServiceServer).GenerateToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/GenerateToken",
+		FullMethod: "/proto.AuthMgrService/GenerateToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GenerateToken(ctx, req.(*GenerateTokenRequest))
+		return srv.(AuthMgrServiceServer).GenerateToken(ctx, req.(*GenerateTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _AuthService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.AuthService",
-	HandlerType: (*AuthServiceServer)(nil),
+var _AuthMgrService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.AuthMgrService",
+	HandlerType: (*AuthMgrServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GenerateToken",
-			Handler:    _AuthService_GenerateToken_Handler,
+			Handler:    _AuthMgrService_GenerateToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

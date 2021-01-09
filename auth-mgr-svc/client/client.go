@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/atyagi9006/banking-app/auth-mrg-svc/pkg/proto"
+	pb "github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/proto"
 	grpc_mw "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 )
