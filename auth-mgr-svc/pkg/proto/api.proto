@@ -7,7 +7,15 @@ import "google/api/annotations.proto";
 
 
 service AuthMgrService {
+
     rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
+
+    rpc RegisterUser(RegisterUserRequest) returns (User) {}
+
+    rpc DeleteUser(UserIdRequest) returns (EmptyMessage){}
+
+    rpc GetUser (GetUserRequest) returns (User) {}
+
 }
 
 message GenerateTokenRequest{
@@ -18,4 +26,28 @@ message GenerateTokenRequest{
 message GenerateTokenResponse{
     string token =1;
 }
-  
+
+message RegisterUserRequest{
+    string email =1;
+    string password = 2;
+    string role = 4; 
+}
+
+message User{
+    string id =1;
+    string email = 2 ;
+    string role = 5;
+}
+
+message GetUserRequest {
+    string id = 1;
+    string email = 2;
+}
+
+// empty
+message EmptyMessage {
+}
+
+message UserIdRequest {
+    string id = 1;
+}

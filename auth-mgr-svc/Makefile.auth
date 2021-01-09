@@ -1,0 +1,50 @@
+.PHONY: init
+init:
+	go get -tags 'postgres' -u github.com/golang-migrate/migrate/cmd/migrate
+	#go get -u github.com/kyleconroy/sqlc/cmd/sqlc
+
+.PHONY: stop_postgres
+stop_postgres:
+	docker stop dev-postgres && docker rm dev-postgres
+
+.PHONY: postgres
+postgres: stop_postgres
+	docker run --name dev-postgres -p 5432:5432 -e POSTGRES_USER=root  -e POSTGRES_PASSWORD=P@ssw0rd -d postgres:12-alpine
+	@sleep 10
+
+.PHONY: createdb
+createdb:
+	docker exec -it dev-postgres createdb --username=root --owner=root auth
+
+.PHONY: dropdb
+dropdb:
+	docker exec -it dev-postgres dropdb auth
+
+.PHONY: migrateup
+migrateup:
+	migrate -path scripts/db/migration -database "postgresql://root:P@ssw0rd@localhost:5432/auth?sslmode=disable" -verbose up
+
+.PHONY: migratedown
+migratedown:
+	migrate -path scripts/db/migration -database "postgresql://root:P@ssw0rd@localhost:5432/auth?sslmode=disable" -verbose down
+
+.PHONY: sqlc
+sqlc:
+	@echo "generating code"
+	sqlc generate
+
+.PHONY: startdb
+startdb: postgres createdb migrateup
+
+.PHONY: test
+test:
+	go test -v -cover ./...
+
+.PHONY: my_test
+my_test:
+	@echo "mode: set" > coverage-all.out
+
+	@go test -v -timeout 600s -tags unit -coverprofile=coverage.out -race ./... | \
+		tee -a test-results.out || exit 1;\
+		tail -n +2 coverage.out >> coverage-all.out || exit 1
+	@go tool cover -html=coverage-all.out -o test-coverage.html

@@ -12,10 +12,28 @@
   ],
   "paths": {},
   "definitions": {
+    "protoEmptyMessage": {
+      "type": "object",
+      "title": "empty"
+    },
     "protoGenerateTokenResponse": {
       "type": "object",
       "properties": {
         "token": {
+          "type": "string"
+        }
+      }
+    },
+    "protoUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "role": {
           "type": "string"
         }
       }

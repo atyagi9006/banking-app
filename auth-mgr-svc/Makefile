@@ -88,4 +88,4 @@ mod:
 	export GOPRIVATE=$(GOPRIVATE) \
 	&& go mod tidy
 
-# include Makefile.bank 
+include Makefile.auth 
