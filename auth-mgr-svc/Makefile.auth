@@ -48,3 +48,6 @@ my_test:
 		tee -a test-results.out || exit 1;\
 		tail -n +2 coverage.out >> coverage-all.out || exit 1
 	@go tool cover -html=coverage-all.out -o test-coverage.html
+
+.PHONY: dbup
+dbup: createdb migrateup

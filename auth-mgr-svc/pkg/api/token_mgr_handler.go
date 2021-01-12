@@ -52,3 +52,15 @@ func (svc *AuthMgrService) GenerateToken(ctx context.Context, req *pb.GenerateTo
 	res := pb.GenerateTokenResponse{Token: token}
 	return &res, nil
 }
+
+func (svc *AuthMgrService) VerifyToken(ctx context.Context, req *pb.TokenRequest) (*pb.VerifyTokenResponse, error) {
+	claims, err := svc.jwtManager.Verify(req.Token)
+	if err != nil {
+		return nil, status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
+	}
+	res := pb.VerifyTokenResponse{
+		Email: claims.Username,
+		Role:  claims.Role,
+	}
+	return &res, nil
+}

@@ -15,8 +15,8 @@ import (
 
 var (
 	addressFlag  = flag.String("acc-grpc-ip", "", "gRPC listening IP")
-	portFlag     = flag.Uint16("grpc-port", 7779, "gRPC listening port")
-	gwPortFlag   = flag.Uint16("rest-port", 7780, "REST gateway port")
+	portFlag     = flag.Uint16("grpc-port", 7781, "gRPC listening port")
+	gwPortFlag   = flag.Uint16("rest-port", 7782, "REST gateway port")
 	certFile     = "pkg/cert/server.crt"
 	keyFile      = "pkg/cert/server.key"
 	insecureFlag = flag.Bool("insecure", true, "Run in insecure mode")

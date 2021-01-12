@@ -28,8 +28,8 @@ type OPAConfig struct {
 func setViperDefaults() {
 	viper.AutomaticEnv()
 	// service configuration
-	viper.SetDefault("grpc-port", 7777)
-	viper.SetDefault("rest-port", 7778)
+	viper.SetDefault("grpc-port", 7781)
+	viper.SetDefault("rest-port", 7782)
 	viper.SetDefault("acc-grpc-ip4", "")
 	// postgres configuration
 	viper.SetDefault("postgres_host", "localhost")
