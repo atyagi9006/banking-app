@@ -36,32 +36,6 @@
           "AuthService"
         ]
       }
-    },
-    "/v1/authping": {
-      "post": {
-        "operationId": "SayHellogw",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/protoPingMessage"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/protoPingMessage"
-            }
-          }
-        ],
-        "tags": [
-          "AuthService"
-        ]
-      }
     }
   },
   "definitions": {
@@ -80,14 +54,6 @@
       "type": "object",
       "properties": {
         "access_token": {
-          "type": "string"
-        }
-      }
-    },
-    "protoPingMessage": {
-      "type": "object",
-      "properties": {
-        "greeting": {
           "type": "string"
         }
       }

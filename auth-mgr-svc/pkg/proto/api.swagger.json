@@ -12,7 +12,7 @@
   ],
   "paths": {},
   "definitions": {
-    "protoEmptyMessage": {
+    "protoEmptyMessageResponse": {
       "type": "object",
       "title": "empty"
     },
@@ -30,6 +30,17 @@
         "id": {
           "type": "string"
         },
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "protoVerifyTokenResponse": {
+      "type": "object",
+      "properties": {
         "email": {
           "type": "string"
         },

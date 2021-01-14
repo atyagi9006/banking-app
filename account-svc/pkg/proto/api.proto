@@ -36,7 +36,7 @@ service AccountService {
             get: "/v1/employee"
         };
     }
-    rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
+   // rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
 
     //customer apis
     rpc CreateCustomer(CreateCustomerRequest) returns (Customer) {
@@ -131,13 +131,13 @@ message GetEmployeeRequest {
     string email = 2;
 }
 
-message GenerateTokenRequest{
+/* message GenerateTokenRequest{
     string email = 1;
     string password =2; 
 }
 message GenerateTokenResponse{
     string token =1;
-}
+} */
 
 message CreateCustomerRequest{
     string email =1; 

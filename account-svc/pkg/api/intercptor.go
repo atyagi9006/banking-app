@@ -7,7 +7,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/atyagi9006/banking-app/account-svc/auth"
+	authmgrPB "github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/proto"
 	"github.com/atyagi9006/opa-authz/opa"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -101,7 +101,11 @@ func (interceptor *AccountService) authorize(ctx context.Context, method string)
 
 	accessToken := values[0]
 	res2 := strings.Split(accessToken, " ")
-	claims, err := interceptor.jwtManager.Verify(res2[1])
+
+	req := authmgrPB.TokenRequest{
+		Token: res2[1],
+	}
+	claims, err := interceptor.authmgrClient.VerifyToken(ctx, &req)
 	if err != nil {
 		return status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
 	}
@@ -122,7 +126,7 @@ func (interceptor *AccountService) authorize(ctx context.Context, method string)
 	return status.Error(codes.PermissionDenied, "no permission to access this RPC")
 }
 
-func (interceptor *AccountService) getOPAData(method string, claims *auth.UserClaims) *bytes.Buffer {
+func (interceptor *AccountService) getOPAData(method string, claims *authmgrPB.VerifyTokenResponse) *bytes.Buffer {
 	data := Request{
 		Path: splitURI(method),
 	}
@@ -135,13 +139,13 @@ func (interceptor *AccountService) getOPAData(method string, claims *auth.UserCl
 	// 	data.Path = splitURI(val[0])
 	// }
 	roles := make(map[string]string)
-	roles[claims.Username] = claims.Role
+	roles[claims.Email] = claims.Role
 
 	body := opa.Input{
 		Input: Input{
 			Request:  data,
 			UserRole: roles,
-			UserID:   claims.Username,
+			UserID:   claims.Email,
 		},
 	}
 

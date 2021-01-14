@@ -11,19 +11,6 @@ message PingMessage {
 
 
 service AuthService {
-    rpc SayHello(PingMessage) returns (PingMessage) {
-        // option (google.api.http) = {
-        //     post: "/1/ping"
-        //     body: "*"
-        // };
-    }
-    rpc SayHellogw(PingMessage) returns (PingMessage) {
-        option (google.api.http) = {
-             post: "/v1/authping"
-             body: "*"
-        };
-    }
-
     rpc Login(LoginRequest) returns (LoginResponse) {
         option (google.api.http) = {
              post: "/v1/auth/signin"

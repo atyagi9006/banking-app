@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
+	authmgrPB "github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/proto"
 )
 
 const (
@@ -69,6 +70,20 @@ func (svc *AccountService) CreateBankEmployee(ctx context.Context, req *pb.Creat
 	if existingEmp.Email == req.Email {
 		return nil, status.Error(codes.AlreadyExists, errEmployeeExists)
 	}
+
+	//register user to auth
+	registerReq := authmgrPB.RegisterUserRequest{
+		Email:    req.Email,
+		Password: req.Password,
+		Role:     req.Role,
+	}
+	regResp, err := svc.authmgrClient.RegisterUser(ctx, &registerReq)
+	if err != nil {
+		log.Println("Error with create new employee failed while auth reg: ", err)
+		return nil, status.Error(codes.Internal, errInternal)
+	}
+
+	log.Println("user is registered successfully on auth ID:", regResp.Id)
 
 	res, err := svc.store.CreateEmployee(ctx, svc.fromCreateEmployeeProto(req))
 	if err != nil {

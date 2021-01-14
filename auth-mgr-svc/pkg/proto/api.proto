@@ -13,7 +13,7 @@ service AuthMgrService {
 
     rpc RegisterUser(RegisterUserRequest) returns (User) {}
 
-    rpc DeleteUser(UserIdRequest) returns (EmptyMessage){}
+    rpc DeleteUser(UserIdRequest) returns (EmptyMessageResponse){}
 
     rpc GetUser (GetUserRequest) returns (User) {}
 
@@ -55,7 +55,7 @@ message GetUserRequest {
 }
 
 // empty
-message EmptyMessage {
+message EmptyMessageResponse {
 }
 
 message UserIdRequest {
