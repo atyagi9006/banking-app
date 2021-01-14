@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	pb "github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/proto"
