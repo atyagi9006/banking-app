@@ -7,8 +7,10 @@ func init() {
 }
 
 type SVCConfig struct {
-	DBConfig  *SQLConfig
-	OPAConfig *OPAConfig
+	DBConfig    *SQLConfig
+	OPAConfig   *OPAConfig
+	RedisConfig *RedisConfig
+	JWtConfig   *JWtConfig
 }
 
 type SQLConfig struct {
@@ -23,6 +25,16 @@ type SQLConfig struct {
 type OPAConfig struct {
 	Enabled  bool
 	Endpoint string
+}
+
+type RedisConfig struct {
+	Host     string
+	Port     string
+	Password string
+}
+type JWtConfig struct {
+	SecretKey        string
+	RefreshSecretKey string
 }
 
 func setViperDefaults() {
@@ -42,6 +54,15 @@ func setViperDefaults() {
 	// opa defaults
 	viper.SetDefault("OPA_ENABLED", true)
 	viper.SetDefault("OPA_ENDPOINT", "http://localhost:8181")
+
+	//redis defaults
+	viper.SetDefault("REDIS_HOST", "127.0.0.1")
+	viper.SetDefault("REDIS_PORT", "6379")
+	viper.SetDefault("REDIS_PASSWORD", "")
+
+	//jwt defaults
+	viper.SetDefault("ACCESS_SECRET", "")
+	viper.SetDefault("REFRESH_SECRET", "")
 }
 
 // GetConfig returns an instance of config, is used internally
@@ -58,9 +79,21 @@ func GetConfig() *SVCConfig {
 		Enabled:  viper.GetBool("OPA_ENABLED"),
 		Endpoint: viper.GetString("OPA_ENDPOINT"),
 	}
+
+	redisConfig := RedisConfig{
+		Host:     viper.GetString("REDIS_HOST"),
+		Port:     viper.GetString("REDIS_PORT"),
+		Password: viper.GetString("REDIS_PASSWORD"),
+	}
+	jwtConfig := JWtConfig{
+		SecretKey:        viper.GetString("ACCESS_SECRET"),
+		RefreshSecretKey: viper.GetString("REFRESH_SECRET"),
+	}
 	conf := SVCConfig{
-		DBConfig:  &dbConfig,
-		OPAConfig: &opaConfig,
+		DBConfig:    &dbConfig,
+		OPAConfig:   &opaConfig,
+		RedisConfig: &redisConfig,
+		JWtConfig:   &jwtConfig,
 	}
 
 	return &conf

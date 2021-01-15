@@ -82,10 +82,24 @@ stop-opa:
 .PHONY:opa-test
 opa-test:
 	opa test ./rego -v
-	
+
+.PHONY: run-redis
+run-redis: stop-redis
+	 docker run -d --name redisDev -p 6379:6379 redis
+
+.PHONY: stop-redis
+stop-redis:
+	docker stop redisDev && docker rm redisDev
+
 .PHONY: mod
 mod:
 	export GOPRIVATE=$(GOPRIVATE) \
 	&& go mod tidy
+
+.PHONY:dev-up
+dev-up:run-opa run-redis dbup
+
+.PHONY:dev-up-inde
+dev-up-inde:run-opa run-redis startdb
 
 include Makefile.auth 

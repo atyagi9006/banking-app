@@ -5,18 +5,21 @@ import (
 	"time"
 
 	"github.com/atyagi9006/banking-app/auth-mgr-svc/db"
+	"github.com/atyagi9006/banking-app/auth-mgr-svc/pkg/config"
 	"github.com/dgrijalva/jwt-go"
 )
 
 const (
-	SecretKey     = "secret"
-	TokenDuration = 15 * time.Minute
+	secretKey     = "secret"
+	tokenDuration = 15 * time.Minute
 )
 
-// JWTManager is a JSON web token manager
-type JWTManager struct {
-	secretKey     string
-	tokenDuration time.Duration
+// jwtManager is a JSON web token manager
+type jwtManager struct {
+	secretKey        string
+	accessSecretKey  string
+	refreshSecretKey string
+	tokenDuration    time.Duration
 }
 
 // UserClaims is a custom JWT claims that contains some user's information
@@ -27,12 +30,17 @@ type UserClaims struct {
 }
 
 // NewJWTManager returns a new JWT manager
-func NewJWTManager(secretKey string, tokenDuration time.Duration) *JWTManager {
-	return &JWTManager{secretKey, tokenDuration}
+func NewJWTManager(c *config.JWtConfig) *jwtManager {
+	return &jwtManager{
+		secretKey:        c.SecretKey,
+		tokenDuration:    tokenDuration,
+		accessSecretKey:  c.SecretKey,
+		refreshSecretKey: c.RefreshSecretKey,
+	}
 }
 
 // Generate generates and signs a new token for a user
-func (manager *JWTManager) Generate(employee *db.User) (string, error) {
+func (manager *jwtManager) Generate(employee *db.User) (string, error) {
 	claims := UserClaims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(manager.tokenDuration).Unix(),
@@ -46,7 +54,7 @@ func (manager *JWTManager) Generate(employee *db.User) (string, error) {
 }
 
 // Verify verifies the access token string and return a user claim if the token is valid
-func (manager *JWTManager) Verify(accessToken string) (*UserClaims, error) {
+func (manager *jwtManager) Verify(accessToken string) (*UserClaims, error) {
 	token, err := jwt.ParseWithClaims(
 		accessToken,
 		&UserClaims{},

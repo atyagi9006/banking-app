@@ -45,16 +45,19 @@ func (svc *AuthMgrService) GenerateToken(ctx context.Context, req *pb.GenerateTo
 		return nil, status.Error(codes.InvalidArgument, errInvaildUserNamePassword)
 	}
 
-	token, err := svc.jwtManager.Generate(&emp)
+	tokenDetails, err := svc.jwtManager.CreateToken(&emp)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}
-	res := pb.GenerateTokenResponse{Token: token}
+	res := pb.GenerateTokenResponse{
+		AccessToken:  tokenDetails.AccessToken,
+		RefreshToken: tokenDetails.RefreshToken,
+	}
 	return &res, nil
 }
 
 func (svc *AuthMgrService) VerifyToken(ctx context.Context, req *pb.TokenRequest) (*pb.VerifyTokenResponse, error) {
-	claims, err := svc.jwtManager.Verify(req.Token)
+	claims, err := svc.jwtManager.ExtractAccessTokenMetadata(req.Token)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
 	}

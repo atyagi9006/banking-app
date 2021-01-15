@@ -9,7 +9,8 @@ import (
 )
 
 type AuthMgrService struct {
-	jwtManager *auth.JWTManager
+	jwtManager auth.TokenProvider //generate token and extract token metadata
+	authStore  auth.AuthStore     //store token in redis
 	store      *db.Store
 }
 
@@ -20,10 +21,12 @@ func NewAuthMgrService() (*AuthMgrService, error) {
 	}
 
 	store := db.NewStore(cfg.DBConfig)
-	jwtMangager := auth.NewJWTManager(auth.SecretKey, auth.TokenDuration)
+	jwtMangager := auth.NewJWTManager(cfg.JWtConfig)
+	authStore := auth.NewAuthStore(cfg.RedisConfig)
 	AuthMgrService := AuthMgrService{
 		store:      store,
 		jwtManager: jwtMangager,
+		authStore:  authStore,
 	}
 	return &AuthMgrService, nil
 }

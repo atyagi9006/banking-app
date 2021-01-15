@@ -19,7 +19,10 @@
     "protoGenerateTokenResponse": {
       "type": "object",
       "properties": {
-        "token": {
+        "access_token": {
+          "type": "string"
+        },
+        "refresh_token": {
           "type": "string"
         }
       }
