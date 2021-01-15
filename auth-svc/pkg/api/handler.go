@@ -35,11 +35,14 @@ func (svc *AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Lo
 		Email:    req.Username,
 		Password: req.Password,
 	}
-	token, err := svc.authmgrClient.GenerateToken(newCtx, &tokenReq)
+	tokenres, err := svc.authmgrClient.GenerateToken(newCtx, &tokenReq)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}
 
-	res := &pb.LoginResponse{AccessToken: token.Token}
+	res := &pb.LoginResponse{
+		AccessToken:  tokenres.AccessToken,
+		RefreshToken: tokenres.RefreshToken,
+	}
 	return res, nil
 }

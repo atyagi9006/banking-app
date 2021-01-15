@@ -5,11 +5,6 @@ package proto;
 
 import "google/api/annotations.proto";
 
-message PingMessage {
-    string greeting = 1;
-}
-
-
 service AuthService {
     rpc Login(LoginRequest) returns (LoginResponse) {
         option (google.api.http) = {
@@ -25,5 +20,8 @@ message LoginRequest {
     string password = 2;
   }
   
-  message LoginResponse { string access_token = 1; }
+message LoginResponse { 
+    string access_token = 1;
+    string refresh_token = 2;
+ }
   
