@@ -11,7 +11,7 @@ import (
 	"github.com/atyagi9006/banking-app/account-svc/pkg/api"
 
 	pb "github.com/atyagi9006/banking-app/account-svc/pkg/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	flag "github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

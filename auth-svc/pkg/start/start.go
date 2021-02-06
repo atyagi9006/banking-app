@@ -10,7 +10,7 @@ import (
 	"github.com/atyagi9006/banking-app/auth-svc/pkg/api"
 
 	pb "github.com/atyagi9006/banking-app/auth-svc/pkg/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	flag "github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"

@@ -4,6 +4,11 @@
     "title": "api.proto",
     "version": "version not set"
   },
+  "tags": [
+    {
+      "name": "AccountService"
+    }
+  ],
   "consumes": [
     "application/json"
   ],
@@ -14,12 +19,18 @@
     "/v1/account": {
       "post": {
         "summary": "accountApi",
-        "operationId": "CreateAccount",
+        "operationId": "AccountService_CreateAccount",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoAccount"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -41,12 +52,18 @@
     "/v1/account/transfer": {
       "post": {
         "summary": "transfer amount between two accounts if currency is same",
-        "operationId": "TransferAmount",
+        "operationId": "AccountService_TransferAmount",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoAccount"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -57,12 +74,18 @@
     },
     "/v1/account/{id}": {
       "get": {
-        "operationId": "GetAccount",
+        "operationId": "AccountService_GetAccount",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoAccount"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -81,12 +104,18 @@
     },
     "/v1/account/{id}/link": {
       "post": {
-        "operationId": "LinkOwner",
+        "operationId": "AccountService_LinkOwner",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoAccount"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -105,12 +134,18 @@
     },
     "/v1/account/{id}/statement": {
       "get": {
-        "operationId": "PrintStatement",
+        "operationId": "AccountService_PrintStatement",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoPrintStatementResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -129,12 +164,18 @@
     },
     "/v1/customer": {
       "get": {
-        "operationId": "GetCustomer",
+        "operationId": "AccountService_GetCustomer",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoCustomer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -164,12 +205,18 @@
       },
       "post": {
         "summary": "customer apis",
-        "operationId": "CreateCustomer",
+        "operationId": "AccountService_CreateCustomer",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoCustomer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -190,12 +237,18 @@
     },
     "/v1/customer/{id}": {
       "delete": {
-        "operationId": "DeleteCustomer",
+        "operationId": "AccountService_DeleteCustomer",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoEmptyMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -212,12 +265,18 @@
         ]
       },
       "put": {
-        "operationId": "UpdateCustomer",
+        "operationId": "AccountService_UpdateCustomer",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoCustomer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -244,12 +303,18 @@
     },
     "/v1/employee": {
       "get": {
-        "operationId": "GetEmployee",
+        "operationId": "AccountService_GetEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoEmployee"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -272,12 +337,18 @@
         ]
       },
       "post": {
-        "operationId": "CreateBankEmployee",
+        "operationId": "AccountService_CreateBankEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoEmployee"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -298,12 +369,18 @@
     },
     "/v1/employee/{id}": {
       "delete": {
-        "operationId": "DeleteEmployee",
+        "operationId": "AccountService_DeleteEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoEmptyMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -322,12 +399,18 @@
     },
     "/v1/ping": {
       "post": {
-        "operationId": "SayHellogw",
+        "operationId": "AccountService_SayHellogw",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoPingMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -391,16 +474,16 @@
         "email": {
           "type": "string"
         },
-        "full_name": {
+        "fullName": {
           "type": "string"
         },
         "address": {
           "type": "string"
         },
-        "kyc_type": {
+        "kycType": {
           "type": "string"
         },
-        "kyc_id": {
+        "kycId": {
           "type": "string"
         }
       }
@@ -415,7 +498,7 @@
         "password": {
           "type": "string"
         },
-        "full_name": {
+        "fullName": {
           "type": "string"
         },
         "role": {
@@ -432,16 +515,16 @@
         "email": {
           "type": "string"
         },
-        "full_name": {
+        "fullName": {
           "type": "string"
         },
         "address": {
           "type": "string"
         },
-        "kyc_type": {
+        "kycType": {
           "type": "string"
         },
-        "kyc_id": {
+        "kycId": {
           "type": "string"
         }
       }
@@ -455,7 +538,7 @@
         "email": {
           "type": "string"
         },
-        "full_name": {
+        "fullName": {
           "type": "string"
         },
         "role": {
@@ -501,14 +584,44 @@
     "protoUpdateCustomerRequest": {
       "type": "object",
       "properties": {
-        "kyc_type": {
+        "kycType": {
           "type": "string"
         },
-        "kyc_id": {
+        "kycId": {
           "type": "string"
         },
         "id": {
           "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
         }
       }
     }

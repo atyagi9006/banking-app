@@ -16,7 +16,7 @@ proto-swag: pkg/proto/api.proto
 	@protoc -I pkg/proto/ \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-		--swagger_out=logtostderr=true:pkg/proto \
+		--openapiv2_out=logtostderr=true:pkg/proto \
 		pkg/proto/api.proto
 
 proto-gw:#pkg/proto/api.proto
