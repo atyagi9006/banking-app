@@ -9,6 +9,7 @@ import (
 
 	"github.com/asaskevich/govalidator"
 	"github.com/atyagi9006/banking-app/account-svc/db"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -77,7 +78,7 @@ func (svc *AccountService) CreateBankEmployee(ctx context.Context, req *pb.Creat
 		Password: req.Password,
 		Role:     req.Role,
 	}
-	regResp, err := svc.authmgrClient.RegisterUser(ctx, &registerReq)
+	regResp, err := svc.authmgrClient.RegisterUser(ctx, &registerReq, grpc.WaitForReady(true))
 	if err != nil {
 		log.Println("Error with create new employee failed while auth reg: ", err)
 		return nil, status.Error(codes.Internal, errInternal)

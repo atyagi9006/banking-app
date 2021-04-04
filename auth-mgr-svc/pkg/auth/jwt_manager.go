@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/atyagi9006/banking-app/auth-mgr-svc/db"
@@ -76,6 +77,6 @@ func (manager *jwtManager) Verify(accessToken string) (*UserClaims, error) {
 	if !ok {
 		return nil, fmt.Errorf("invalid token claims")
 	}
-
+	log.Printf("calms %v", claims)
 	return claims, nil
 }

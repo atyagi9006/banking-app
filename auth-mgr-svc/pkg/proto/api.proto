@@ -11,6 +11,10 @@ service AuthMgrService {
     rpc GenerateToken(GenerateTokenRequest)returns (GenerateTokenResponse){}
     rpc VerifyToken(TokenRequest) returns (VerifyTokenResponse){}
 
+    rpc ExpireToken(TokenRequest) returns (EmptyMessageResponse){}
+
+    rpc RefreshToken(RefreshTokenRequest) returns (GenerateTokenResponse){}
+
     rpc RegisterUser(RegisterUserRequest) returns (User) {}
 
     rpc DeleteUser(UserIdRequest) returns (EmptyMessageResponse){}
@@ -30,11 +34,11 @@ message VerifyTokenResponse{
 
 message GenerateTokenRequest{
     string email = 1;
-    string password =2; 
+    string password = 2; 
 }
 
 message GenerateTokenResponse{
-    string access_token =1;
+    string access_token = 1;
     string refresh_token = 2;
 
 }
@@ -62,4 +66,8 @@ message EmptyMessageResponse {
 
 message UserIdRequest {
     string id = 1;
+}
+
+message RefreshTokenRequest{
+    string refresh_token = 1;
 }

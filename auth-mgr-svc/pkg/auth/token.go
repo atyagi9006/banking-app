@@ -3,8 +3,10 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,10 +32,11 @@ func (t *jwtManager) CreateToken(user *db.User) (*TokenDetails, error) {
 	//Creating Access Token
 	atClaims := jwt.MapClaims{}
 	atClaims["access_uuid"] = td.TokenUuid
-	atClaims["user_id"] = user.ID
+	atClaims["user_id"] = strconv.Itoa(int(user.ID))
 	atClaims["user_email"] = user.Email
 	atClaims["role"] = user.Role
 	atClaims["exp"] = td.AtExpires
+	log.Println("gen claims ", atClaims)
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	td.AccessToken, err = at.SignedString([]byte(t.accessSecretKey))
 	if err != nil {
@@ -85,22 +88,23 @@ func extract(token *jwt.Token) (*AccessDetails, error) {
 	if !ok && !token.Valid {
 		return nil, errors.New("something went wrong")
 	}
+	log.Println("verify claims ", claims)
 	accessUUID, ok := claims["access_uuid"].(string)
 	if !ok {
-		return nil, errors.New("unauthorized")
+		return nil, errors.New("unauthorized a_uid")
 	}
 	userID, userOk := claims["user_id"].(string)
 	if !userOk {
-		return nil, errors.New("unauthorized")
+		return nil, errors.New("unauthorized uid")
 	}
-	userName, userNameOk := claims["user_id"].(string)
+	userName, userNameOk := claims["user_email"].(string)
 	if !userNameOk {
-		return nil, errors.New("unauthorized")
+		return nil, errors.New("unauthorized email")
 	}
 
 	role, roleOk := claims["role"].(string)
 	if !roleOk {
-		return nil, errors.New("unauthorized")
+		return nil, errors.New("unauthorized role")
 	}
 
 	ad := AccessDetails{
